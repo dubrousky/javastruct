@@ -1,8 +1,5 @@
 package struct;
 
-import struct.StructException;
-import struct.StructPacker;
-import struct.StructUnpacker;
 import junit.framework.TestCase;
 
 public class TestSimpleNestedStructs extends TestCase {
@@ -27,7 +24,7 @@ public class TestSimpleNestedStructs extends TestCase {
 		n.p3 = p3;
 		
 		try {
-			byte[] b = StructPacker.pack(n);
+			byte[] b = JavaStruct.pack(n);
 			
 			SimpleNested n2 = new SimpleNested();
 			n2.p1 = p4;
@@ -35,7 +32,7 @@ public class TestSimpleNestedStructs extends TestCase {
 			n2.p3 = p6;			
 			
 			assertFalse(n2.equals(n));
-			StructUnpacker.unpack(n2, b);
+			JavaStruct.unpack(n2, b);
 			assertTrue(n2.equals(n));
 			
 		} catch (StructException e) {

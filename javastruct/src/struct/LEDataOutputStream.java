@@ -1,4 +1,6 @@
 
+// TODO : This class will be replaced by a new implementation.
+
 package struct;
 import java.io.DataOutput;
 import java.io.DataOutputStream;

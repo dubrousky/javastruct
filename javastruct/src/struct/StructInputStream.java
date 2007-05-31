@@ -17,20 +17,14 @@ public class StructInputStream extends InputStream {
     int defaultModifiers = Modifier.PUBLIC;
     int modifiers = defaultModifiers;
 
-  public StructInputStream( InputStream inStream ) {
-      init(inStream,false);
-  }
-
-  protected StructInputStream() {
-  }
-
-  protected void init( InputStream inStream, boolean isLittleEndian) {
-      if (isLittleEndian){
+  protected void init( InputStream inStream, ByteOrder order) {
+      if ( order == ByteOrder.LITTLE_ENDIAN){
           dataInput = new LEDataInputStream(inStream);
       }
       else {
           dataInput = new DataInputStream( inStream );
       }
+   	  modifiers = Modifier.PUBLIC | Modifier.PRIVATE | Modifier.PROTECTED ;
   }
 
   public void readObject( Object obj)throws StructException{
