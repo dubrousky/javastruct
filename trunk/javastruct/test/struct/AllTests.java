@@ -11,6 +11,7 @@ public class AllTests {
 		suite.addTestSuite(TestPrimitiveArrays.class);
 		suite.addTestSuite(TestPrimitives.class);
 		suite.addTestSuite(TestSimpleNestedStructs.class);
+		suite.addTestSuite(TestLengthMarker.class);
 		//$JUnit-END$
 		return suite;
 	}

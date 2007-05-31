@@ -19,18 +19,19 @@ public class StructOutputStream extends OutputStream {
 
 	public StructOutputStream(OutputStream outStream) {
 		// Default : BigEndian (non-Intel)
-		init(outStream, false);
+		init(outStream, ByteOrder.BIG_ENDIAN);
 	}
 
 	protected StructOutputStream() {
 	}
 
-	protected void init(OutputStream outStream, boolean isLittleEndian) {
-		if (isLittleEndian) {
+	protected void init(OutputStream outStream, ByteOrder order) {
+		if (order == ByteOrder.LITTLE_ENDIAN) {
 			dataOutput = new LEDataOutputStream(outStream);
 		} else {
 			dataOutput = new DataOutputStream(outStream);
 		}
+		modifiers = Modifier.PUBLIC | Modifier.PRIVATE | Modifier.PROTECTED ;
 	}
 
 	public int getModifiers() {

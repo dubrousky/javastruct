@@ -4,7 +4,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.util.Vector;
 
 public class StructPacker extends StructOutputStream{
@@ -12,45 +11,23 @@ public class StructPacker extends StructOutputStream{
 	private Object objectToPack = null;
 
     public StructPacker(Object objectToPack){
-        this(objectToPack,true);
+        this(objectToPack, new ByteArrayOutputStream(), ByteOrder.BIG_ENDIAN);
     }
 
-    public StructPacker(Object objectToPack, boolean isLittleEndian){
-    	this.objectToPack = objectToPack;
-		bos = new ByteArrayOutputStream();
-		super.init(bos, isLittleEndian);
-		super.modifiers = Modifier.PUBLIC | Modifier.PRIVATE | Modifier.PROTECTED ;
+    public StructPacker(Object objectToPack, ByteOrder order){
+    	this(objectToPack, new ByteArrayOutputStream(), order);
     }
 
-	public StructPacker(Object objectToPack, OutputStream os){
+	public StructPacker(Object objectToPack, OutputStream os, ByteOrder order){
         this.objectToPack = objectToPack ;
-        bos = (ByteArrayOutputStream)os;
-        super.init(bos, true);
+        this.bos = (ByteArrayOutputStream)os;
+        super.init(bos, order);
 	}
 
     public byte[] pack() throws StructException {
         writeObject(objectToPack);
         return bos.toByteArray();
     }
-
-    public static byte[] packBigEndian(Object objectToPack) throws StructException {
-        StructPacker packer = new StructPacker(objectToPack, false);
-        return packer.pack();
-    }
-    
-    public static byte[] pack(Object objectToPack) throws StructException {
-        StructPacker packer = new StructPacker(objectToPack);
-        return packer.pack();
-    }
-
-	public static byte[] asByteArray(Object objectToPack) throws RuntimeException {
-		try {
-			StructPacker packer = new StructPacker(objectToPack);
-			return packer.pack();
-		} catch (StructException e) {
-			throw new RuntimeException(e);
-		}
-	}
 
 	/**
 	 * Serialize Object as a struct

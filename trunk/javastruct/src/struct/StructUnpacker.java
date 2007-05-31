@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.util.Vector;
 
 /**
@@ -14,54 +13,22 @@ import java.util.Vector;
 public class StructUnpacker extends StructInputStream {
     private Object objectToUnpack = null;
 
-	public StructUnpacker(InputStream inStream) {
-		super(inStream);
-	}
-
-    public static final int REQUIRE_GETTER_SETTER =  Modifier.PRIVATE | Modifier.PROTECTED;
-    ByteArrayInputStream bis;
-
     public StructUnpacker(Object objectToUnpack, byte[] bufferToUnpack){
-        this(objectToUnpack,bufferToUnpack,true);
+        this(objectToUnpack, new ByteArrayInputStream(bufferToUnpack), ByteOrder.BIG_ENDIAN);
     }
-
-    public StructUnpacker(Object objectToUnpack, byte[] bufferToUnpack, boolean isLittleEndian){
-        this.objectToUnpack = objectToUnpack;
-        bis = new ByteArrayInputStream(bufferToUnpack);
-        super.init(bis,isLittleEndian);
-        super.modifiers = Modifier.PUBLIC | Modifier.PRIVATE | Modifier.PROTECTED ;
+    
+    public StructUnpacker(Object objectToUnpack, byte[] bufferToUnpack, ByteOrder order){
+    	this(objectToUnpack, new ByteArrayInputStream(bufferToUnpack), order);
     }
-
-    public StructUnpacker(Object objectToUnpack, InputStream is){
-        super(is);
+    
+    public StructUnpacker(Object objectToUnpack, InputStream is, ByteOrder order){
+    	this.objectToUnpack = objectToUnpack;
+    	super.init(is, ByteOrder.BIG_ENDIAN);
     }
 
     public void unpack() throws StructException{
         readObject(objectToUnpack);
     }
-
-    public static void unpack(Object object, byte[] buffer) throws StructException {
-        StructUnpacker unpacker = new StructUnpacker(object, buffer);
-        unpacker.unpack();
-    }
-
-	public static void createFromByteArray(Object object, byte[] buffer) throws RuntimeException {
-		try {
-			StructUnpacker unpacker = new StructUnpacker(object, buffer);
-			unpacker.unpack();
-		} catch (StructException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	public static void createFromByteArray(Object object, byte[] buffer, boolean isLittleEndian) throws RuntimeException {
-		try {
-			StructUnpacker unpacker = new StructUnpacker(object, buffer, isLittleEndian);
-			unpacker.unpack();
-		} catch (StructException e) {
-			throw new RuntimeException(e);
-		}
-	}
 
     public void readObject( Object obj) throws StructException{
         if(obj == null)

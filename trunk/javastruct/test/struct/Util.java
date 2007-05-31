@@ -4,16 +4,13 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 
-import struct.StructException;
-import struct.StructPacker;
-
 public class Util {
 	public static void testPerf(Object o, int iters) {
 		try {
 			TimeTracker.startClock("s");
 			byte[] b = null;
 			for (int i = 0; i < iters; i++) {
-				b = StructPacker.pack(o);
+				b = JavaStruct.pack(o);
 			}
 			System.out.println("(" + o.getClass().getName()
 					+ ") Packing performance:  "
