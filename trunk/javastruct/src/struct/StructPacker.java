@@ -34,10 +34,8 @@ public class StructPacker extends StructOutputStream{
 	 * Serialize Object as a struct
 	 */
 	public void writeObject( Object obj) throws StructException{
-        if(obj == null)
-        	throw new StructException("Struct classes cant be null.");
+        if(obj == null)	throw new StructException("Struct classes cant be null.");
         StructData info = StructUtils.getStructInfo(obj);
-        Field[] fields = info.getFields();
 
         Vector<Field> lengthedArrayFields = new Vector<Field>();
         Vector<Object> lengthedArrayFieldValues = new Vector<Object>();
@@ -45,7 +43,7 @@ public class StructPacker extends StructOutputStream{
         boolean lengthedArrayField = false;
         int arrayLength = 0;
 
-		for (Field currentField : fields) {
+		for (Field currentField : info.getFields()) {
 			StructFieldData fieldData = info.getFieldData(currentField.getName());
 			if(fieldData == null) {
 				throw new StructException("Field Data not found for field: " + currentField.getName());
@@ -74,7 +72,7 @@ public class StructPacker extends StructOutputStream{
             		if(lengthedArray && arrayLength >= 0){
             			writeField(currentField, getter, obj, arrayLength);
             		}
-            		else writeField(currentField, getter,obj, -1);
+            		else writeField(currentField, getter, obj, -1);
             	}
             	// Field is public. Access directly.
             	else {

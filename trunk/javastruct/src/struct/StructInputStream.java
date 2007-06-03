@@ -7,16 +7,13 @@ import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.nio.ByteOrder;
 
 import struct.Constants.Primitive;
 
-public class StructInputStream extends InputStream {
+public abstract class StructInputStream extends InputStream {
 
     DataInput dataInput;
-    int defaultModifiers = Modifier.PUBLIC;
-    int modifiers = defaultModifiers;
 
   protected void init( InputStream inStream, ByteOrder order) {
       if ( order == ByteOrder.LITTLE_ENDIAN){
@@ -25,24 +22,9 @@ public class StructInputStream extends InputStream {
       else {
           dataInput = new DataInputStream( inStream );
       }
-   	  modifiers = Modifier.PUBLIC | Modifier.PRIVATE | Modifier.PROTECTED ;
   }
 
-  public void readObject( Object obj)throws StructException{
-    Field field[] = obj.getClass().getDeclaredFields();
-    for ( int i=0; i<field.length; i++) {
-        if((field[i].getModifiers() & ~modifiers)==0 && (field[i].getModifiers() | modifiers)!= 0 ){
-            try {
-                readField( field[i], null, null, obj);
-            }catch(StructException e){
-                throw e;
-            }
-             catch (Exception e) {
-                throw new StructException(e);
-            }
-        }
-    }
-  }
+  public abstract void readObject(Object obj) throws StructException;
 
   public void readField( Field field, Method getter, Method setter, Object obj )
               throws IOException, InvocationTargetException, InstantiationException, IllegalAccessException, StructException {
