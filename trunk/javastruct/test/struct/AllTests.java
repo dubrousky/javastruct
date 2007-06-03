@@ -12,6 +12,7 @@ public class AllTests {
 		suite.addTestSuite(TestPrimitives.class);
 		suite.addTestSuite(TestSimpleNestedStructs.class);
 		suite.addTestSuite(TestLengthMarker.class);
+		suite.addTestSuite(PerfTests.class);
 		//$JUnit-END$
 		return suite;
 	}
