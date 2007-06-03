@@ -69,9 +69,9 @@ public class StructUnpacker extends StructInputStream {
             		}
             	}
             	// For private and protected fields, use getFieldName or veya isFieldName
-            	if ( StructUtils.requiresGetterSetter(currentField.getModifiers()) ){
-            		Method getter = info.getGetter(currentField);
-            		Method setter = info.getSetter(currentField);
+            	if ( fieldData.requiresGetterSetter()){
+            		Method getter = fieldData.getGetter();
+            		Method setter = fieldData.getSetter();
             		if(getter != null && setter != null){
             			if(lengthedArray && arrayLength >= 0){
             				Object ret = Array.newInstance(currentField.getType().getComponentType(),arrayLength);

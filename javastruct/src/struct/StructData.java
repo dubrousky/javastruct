@@ -123,16 +123,6 @@ public class StructData {
 		}
 		throw new StructException("The field needs a setter method, but none supplied. Field: " + field.getName());
 	}
-
-    /**
-     * Is this an array length marker?
-     *
-     * @param current Field
-     * @return boolean
-     */
-    private static final boolean isArrayLengthMarker(Field field){
-    	return (field.getAnnotation(ArrayLengthMarker.class) != null);
-    }
     
 	public Field[] getFields() {
 		return fields;
@@ -150,11 +140,4 @@ public class StructData {
 		return lengthedArrayFields.get(fieldName);
 	}
 
-	public Method getGetter(Field field) {
-		return getters.get(field.getName());
-	}
-
-	public Method getSetter(Field field) {
-		return setters.get(field.getName());
-	}
 }
