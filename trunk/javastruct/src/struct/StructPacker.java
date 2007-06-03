@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.nio.ByteOrder;
 import java.util.Vector;
 
 public class StructPacker extends StructOutputStream{
@@ -35,8 +36,6 @@ public class StructPacker extends StructOutputStream{
 	public void writeObject( Object obj) throws StructException{
         if(obj == null)
         	throw new StructException("Struct classes cant be null.");
-        StructUtils.implementsStruct(obj);
-        StructUtils.isAccessible(obj);
         StructData info = StructUtils.getStructInfo(obj);
         Field[] fields = info.getFields();
 

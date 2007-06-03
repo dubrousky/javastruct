@@ -1,5 +1,7 @@
 package struct;
 
+import java.nio.ByteOrder;
+
 public class JavaStruct {
 	
 	public static final byte[] pack(Object o) throws StructException{
