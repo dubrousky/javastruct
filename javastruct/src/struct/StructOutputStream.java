@@ -12,7 +12,7 @@ import java.nio.ByteOrder;
 
 import struct.Constants.Primitive;
 
-public class StructOutputStream extends OutputStream {
+public abstract class StructOutputStream extends OutputStream {
 
 	protected DataOutput dataOutput;
 	protected int defaultModifiers = Modifier.PUBLIC;
@@ -43,20 +43,7 @@ public class StructOutputStream extends OutputStream {
 		this.modifiers = modifiers;
 	}
 
-	public void writeObject(Object obj) throws StructException {
-		Field field[] = obj.getClass().getDeclaredFields();
-		for (int i = 0; i < field.length; i++) {
-			if ((field[i].getModifiers() & ~modifiers) == 0
-					&& (field[i].getModifiers() | modifiers) != 0) {
-				try {
-					if (field[i].get(obj) != null)
-						writeField(field[i], null, obj, -1);
-				} catch (Exception e) {
-					throw new StructException(e);
-				}
-			}
-		}
-	}
+	public abstract void writeObject(Object obj) throws StructException;
 	
 	/**
 	 * Write a fields value. Field can be an primitive, array or another object.
