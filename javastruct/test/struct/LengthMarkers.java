@@ -6,7 +6,7 @@ import struct.StructField;
 
 @StructClass
 public class LengthMarkers {
-	@ArrayLengthMarker
+	@ArrayLengthMarker (fieldName = "buffer")
 	@StructField(order = 0)
 	public int bufferLength;
 	@StructField(order = 1)

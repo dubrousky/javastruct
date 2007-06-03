@@ -33,14 +33,6 @@ public class TestPrimitives extends TestCase {
 			fail();
 		}
 	}
-
-	public void testPublicPrimitivesPerf(){
-		Util.testPerf(new PublicPrimitives(), 500000);
-	}
-
-	public void testPrivatePrimitivesPerf(){
-		Util.testPerf(new PrivatePrimitives(), 500000);
-	}
 	
 }
 	

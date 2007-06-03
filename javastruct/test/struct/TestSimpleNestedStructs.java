@@ -40,21 +40,6 @@ public class TestSimpleNestedStructs extends TestCase {
 			fail();
 		}
 	}
-	
-	public void testPublicPrimitivesPerf(){
-		PublicPrimitives p1 = new PublicPrimitives();
-		PublicPrimitives p2 = new PublicPrimitives();
-		PublicPrimitives p3 = new PublicPrimitives();
-		p1.setParams();
-		p2.setParams();
-		p3.setParams();
-		
-		SimpleNested n = new SimpleNested();
-		n.p1 = p1;
-		n.p2 = p2;
-		n.p3 = p3;
-		
-		Util.testPerf(n, 100000);
-	}	
+
 	
 }

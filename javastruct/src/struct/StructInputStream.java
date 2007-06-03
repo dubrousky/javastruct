@@ -158,15 +158,6 @@ public class StructInputStream extends InputStream {
       }
   }  
 
-//  public void handleObject(Field field, Object obj)
-//                           throws IllegalArgumentException,
-//                                  StructException,
-//                                  IllegalAccessException,
-//                                  IOException,
-//                                  InstantiationException{
-//      readObject(field.get(obj));
-//  }
-  
   /**
    * @param field
    * @param obj
@@ -178,7 +169,6 @@ public class StructInputStream extends InputStream {
   public void handleObject(Field field, Object obj)
 			throws IllegalArgumentException, StructException, IOException,
 			InstantiationException, IllegalAccessException {
-
 		if (field.get(obj) == null) {
 			if (field.getType().getName().endsWith("FixedString")) {
 				throw new StructException("FixedString objects should be initialized before unpacking :"
@@ -186,7 +176,6 @@ public class StructInputStream extends InputStream {
 			}
 			field.set(obj, field.getType().newInstance());
 		}
-
 		readObject(field.get(obj));
 	}  
 

@@ -69,11 +69,6 @@ public class TestPrimitiveArrays extends TestCase {
 			fail();
 		}
 	}	
-	public void testPublicPrimitivesPerf(){
-		PublicPrimitiveArrays o = new PublicPrimitiveArrays();
-		o.init(10);
-		o.setAsc(10);
-		Util.testPerf(o, 100000);
-	}	
+	
 
 }
