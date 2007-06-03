@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.nio.ByteOrder;
 import java.util.Vector;
 
 /**
@@ -31,12 +32,7 @@ public class StructUnpacker extends StructInputStream {
     }
 
     public void readObject( Object obj) throws StructException{
-        if(obj == null)
-            throw new StructException("Object cannot be null.");
-         //Is this Object a Struct?
-        StructUtils.implementsStruct(obj);
-        StructUtils.isAccessible(obj);
-
+        if(obj == null)  throw new StructException("Object cannot be null.");
         StructData info = StructUtils.getStructInfo(obj);
         Field[] fields = info.getFields();
 

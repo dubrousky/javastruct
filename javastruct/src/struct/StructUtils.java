@@ -26,6 +26,7 @@ public class StructUtils {
         }
          //Annotated member check.
         if(obj.getClass().getAnnotation(StructClass.class) != null){
+        	isAccessible(obj);
             Field annotatedFields[] = obj.getClass().getDeclaredFields();
             Field tmpStructFields[] = new Field[annotatedFields.length];
             int annotatedFieldCount = 0;
@@ -53,15 +54,6 @@ public class StructUtils {
             return info;
         }
         throw new StructException("No struct Annotation found for " + obj.getClass().getName());
-    }
-
-    /**
-     *
-     * @param obj Object
-     * @return if class is marked as Struct
-     */
-    public static boolean implementsStruct(Object obj) throws StructException {
-    	return obj.getClass().getAnnotation(StructClass.class) != null ;
     }
 
     /**
