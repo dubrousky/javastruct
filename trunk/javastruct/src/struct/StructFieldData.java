@@ -7,10 +7,11 @@ import struct.Constants.Primitive;
 
 public class StructFieldData {
 	private Field field;
-	private boolean requiresGetterSetter;
+	private boolean requiresGetterSetter = false;
 	private Method getter;
 	private Method setter;
-	private boolean arrayLengthMarker;
+	private boolean arrayLengthMarker = false;
+	private Field lengthField;
 	private Field arrayWithDefinedLength;
 	private Primitive type;
 	
@@ -24,6 +25,10 @@ public class StructFieldData {
 		this.getter = getter;
 		this.setter = setter;
 		this.type = type;
+	}
+	
+	public StructFieldData(){
+		
 	}
 
 
@@ -94,6 +99,30 @@ public class StructFieldData {
 
 	public void setType(Primitive type) {
 		this.type = type;
+	}
+
+	public Field getArrayWithDefinedLength() {
+		return arrayWithDefinedLength;
+	}
+
+
+	public void setArrayWithDefinedLength(Field arrayWithDefinedLength) {
+		this.arrayWithDefinedLength = arrayWithDefinedLength;
+	}
+
+
+	public boolean isRequiresGetterSetter() {
+		return requiresGetterSetter;
+	}
+
+
+	public Field getLengthField() {
+		return lengthField;
+	}
+
+
+	public void setLengthField(Field lengthField) {
+		this.lengthField = lengthField;
 	}
 	
 }

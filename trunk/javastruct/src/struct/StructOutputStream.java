@@ -15,8 +15,6 @@ import struct.Constants.Primitive;
 public abstract class StructOutputStream extends OutputStream {
 
 	protected DataOutput dataOutput;
-	protected int defaultModifiers = Modifier.PUBLIC;
-	protected int modifiers = defaultModifiers;
 
 	public StructOutputStream(OutputStream outStream) {
 		// Default : BigEndian (non-Intel)
@@ -32,15 +30,6 @@ public abstract class StructOutputStream extends OutputStream {
 		} else {
 			dataOutput = new DataOutputStream(outStream);
 		}
-		modifiers = Modifier.PUBLIC | Modifier.PRIVATE | Modifier.PROTECTED ;
-	}
-
-	public int getModifiers() {
-		return modifiers;
-	}
-
-	public void setModifiers(int modifiers) {
-		this.modifiers = modifiers;
 	}
 
 	public abstract void writeObject(Object obj) throws StructException;

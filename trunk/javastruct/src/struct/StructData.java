@@ -15,8 +15,6 @@ public class StructData {
 	Field[] fields = null;
 	Method[] methods = null;
 	HashMap<String, Field> lengthedArrayFields = new HashMap<String, Field>();
-	HashMap<String, Method> getters = new HashMap<String, Method>();
-	HashMap<String, Method> setters = new HashMap<String, Method>();
 	HashMap<String, StructFieldData> fieldDataMap = new HashMap<String, StructFieldData>();
 	static int ACCEPTED_MODIFIERS =  Modifier.PUBLIC | Modifier.PRIVATE | Modifier.PROTECTED;
 
@@ -31,16 +29,19 @@ public class StructData {
 		this.methods = methods;
 		
 		for (Field field : fields) {
+			// check the fields modifier type. if it's not accepted, throw an  exception.
 			if (!((field.getModifiers() & ~ACCEPTED_MODIFIERS) == 0 
 				&& (field.getModifiers() | ACCEPTED_MODIFIERS) != 0)) {
 				throw new StructException("Field type should be public, private or protected : " + field.getName());
 			}
-			boolean isArrayLengthMarker = false;
+			
+			StructFieldData fieldData = new StructFieldData();
+			
 			Field lengthDefinedArrayField = null;
 			// find the members whose lengths are given in another field.
 			ArrayLengthMarker lengthMarker = field.getAnnotation(ArrayLengthMarker.class);
 			if (lengthMarker != null) {
-				isArrayLengthMarker = true;
+				fieldData.setArrayLengthMarker(true);
 				lengthedArrayFields.put(field.getName(), field);
 				for(int i=0; i<fields.length ;i++){
 					if (lengthMarker.fieldName().equals(fields[i].getName())) {
@@ -51,31 +52,15 @@ public class StructData {
 					throw new StructException("Lenght Marker Fields target is not found: " + lengthMarker.fieldName());
 				}
 			}
-
-			Method getter = null;
-			Method setter = null;
-			// Find members which requires a getter and setter,
-			// also find them, put into a Map for faster access later.
+			// If required, Find getter and setter methods, put into Maps for faster access later.
 			if (StructUtils.requiresGetterSetter(field.getModifiers())) {
-				getter = getGetterName(methods, field);
-				getters.put(field.getName(), getter);
-				setter = getSetterName(methods, field);
-				setters.put(field.getName(), setter);
+				fieldData.setGetter(getGetterName(methods, field));
+				fieldData.setSetter(getSetterName(methods, field));
+				fieldData.setRequiresGetterSetter(true);
 			}
-			boolean requiresGS = getters != null ? true : false;
-			
-			Primitive type = Primitive.OBJECT; 
-			if ( !field.getType().isArray() ){
-				type = Constants.getPrimitive(field.getType().getName());
-			} else {
-				type = Constants.getPrimitive(field.getType().getName().charAt(1));
-			}
-			
-			StructFieldData fieldData = new StructFieldData(field, requiresGS,
-					 getter, setter, type, isArrayLengthMarker,lengthDefinedArrayField );
+			fieldData.setType( Constants.getPrimitive(field) ); 
 			
 			fieldDataMap.put(field.getName(),fieldData);
-			
 		}
 	}
 	

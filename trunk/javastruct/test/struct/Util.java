@@ -118,7 +118,10 @@ public class Util {
 			if (!a1[i].equals(a2[i])) return false;
 		}
 		return true;
-	}	
+	}
+
+    private Util() {
+    }
 
 
 }
