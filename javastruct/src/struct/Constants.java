@@ -1,5 +1,6 @@
 package struct;
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
 
 public class Constants {
@@ -34,13 +35,21 @@ public class Constants {
 			signatures.put(p.signature, p);
 		}
 	}
+
+	public static final Primitive getPrimitive(Field field){
+		if ( !field.getType().isArray() ){
+			return getPrimitive(field.getType().getName());
+		} else {
+			return getPrimitive(field.getType().getName().charAt(1));
+		}
+	}
 	
-	public static Primitive getPrimitive(String name){
+	public static final Primitive getPrimitive(String name){
 		Primitive p = primitiveTypes.get(name);
 		return p != null ? p : Primitive.OBJECT;
 	}
 	
-	public static Primitive getPrimitive(char signature){
+	public static final Primitive getPrimitive(char signature){
 		Primitive p = signatures.get(signature);
 		return p != null ? p : Primitive.OBJECT;
 	}
