@@ -5,8 +5,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
 
-import struct.Constants.Primitive;
-
 /**
  * This class keeps class metadata for faster access
  *
@@ -34,21 +32,21 @@ public class StructData {
 				&& (field.getModifiers() | ACCEPTED_MODIFIERS) != 0)) {
 				throw new StructException("Field type should be public, private or protected : " + field.getName());
 			}
+			StructFieldData fieldData = new StructFieldData(field);
 			
-			StructFieldData fieldData = new StructFieldData();
-			
-			Field lengthDefinedArrayField = null;
 			// find the members whose lengths are given in another field.
 			ArrayLengthMarker lengthMarker = field.getAnnotation(ArrayLengthMarker.class);
 			if (lengthMarker != null) {
 				fieldData.setArrayLengthMarker(true);
 				lengthedArrayFields.put(field.getName(), field);
-				for(int i=0; i<fields.length ;i++){
+				int i= 0;
+				for(; i<fields.length ;i++){
 					if (lengthMarker.fieldName().equals(fields[i].getName())) {
-						lengthDefinedArrayField = fields[i];
+						fieldData.setArrayWithDefinedLength(fields[i]);
+						break;
 					}
 				}
-				if (lengthDefinedArrayField == null){
+				if (i == fields.length){
 					throw new StructException("Lenght Marker Fields target is not found: " + lengthMarker.fieldName());
 				}
 			}
@@ -124,5 +122,4 @@ public class StructData {
 	public Field getLenghtedArray(String fieldName) {
 		return lengthedArrayFields.get(fieldName);
 	}
-
 }

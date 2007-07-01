@@ -57,7 +57,7 @@ public class StructUtils {
     }
 
     /**
-     * Is object accessable?
+     * is object accessible?
      *
      * @param obj Object
      * @throws StructException 
@@ -99,7 +99,7 @@ public class StructUtils {
 
 
     /**
-     * Does this field reauires a getter or setter?.
+     * Does this field requires a getter or setter?.
      *
      * @param modifier , modifier mask
      * @return : true if field requires getter - setter. false otherwise
