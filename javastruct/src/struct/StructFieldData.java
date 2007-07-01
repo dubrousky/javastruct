@@ -27,10 +27,9 @@ public class StructFieldData {
 		this.type = type;
 	}
 	
-	public StructFieldData(){
-		
+	public StructFieldData(Field field){
+		this.field = field;
 	}
-
 
 	public Field getField() {
 		return field;
