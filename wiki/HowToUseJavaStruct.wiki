@@ -3,13 +3,31 @@
 
 = Introduction =
 
+= General usage =
+
+"Struct" façade class is used to pack and unpack struct classes.
+{{{
+	public void testPublicPrimitives(){
+		PublicPrimitives pp = new PublicPrimitives();
+		// Change some fields in object;
+		try {
+			byte[] b = JavaStruct.pack(pp);
+			PublicPrimitives pp2 = new PublicPrimitives();
+			assertFalse(pp.equals(pp2));
+			JavaStruct.unpack(pp2, b);
+			assertTrue(pp.equals(pp2));
+		} catch (StructException e) {
+			e.printStackTrace();
+			fail();
+		}
+	}
+}}}
 
 = Using Primitives =
 
 Using primitives. Note that private and protected fields requires appropriate getter and setter methods. Transient fields are automatically excluded.
 
 {{{
-@SuppressWarnings("serial")
 @StructClass
 public class PublicPrimitives implements Serializable {
 	@StructField(order = 0)
@@ -51,6 +69,17 @@ public class PublicPrimitives implements Serializable {
 
 	public void setD(double d) {
 		this.d = d;
+	}
+
+	public boolean equals(Object o){
+		PublicPrimitives other = (PublicPrimitives)o;
+		return (this.b == other.b 
+				&& this.c == other.c
+				&& this.s == other.s
+				&& this.i == other.i
+				&& this.lo == other.lo
+				&& this.f == other.f
+				&& this.d == other.d);
 	}
 }
 }}}
