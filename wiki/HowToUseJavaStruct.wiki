@@ -1,14 +1,12 @@
-#summary One-sentence summary of this page.
+#summary This page explains how to use JavaStruct library.
 #labels Featured,Phase-Implementation
 
 = Introduction =
 
 
-
-
 = Using Primitives =
 
-Using primitives. Note that private and protected fields requires appropriate getter and setter methods. 
+Using primitives. Note that private and protected fields requires appropriate getter and setter methods. Transient fields are automatically excluded.
 
 {{{
 @SuppressWarnings("serial")
@@ -16,19 +14,25 @@ Using primitives. Note that private and protected fields requires appropriate ge
 public class PublicPrimitives implements Serializable {
 	@StructField(order = 0)
 	public byte b;
+
 	@StructField(order = 1)
 	public char c;
+
 	@StructField(order = 2)
 	public short s;
+
 	@StructField(order = 3)
 	public int i;
+
 	@StructField(order = 4)
 	public long lo;
+
 	@StructField(order = 5)
 	protected float f;
+
 	@StructField(order = 6)
 	private double d;
-	
+
 	transient int blah;
 	transient double foo;
 
