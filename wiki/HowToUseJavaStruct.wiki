@@ -3,6 +3,12 @@
 
 = Introduction =
 
+Struct classes can be used to greatly simplfy network protocol codes of Java applications when working with embedded devices and other applications which uses C style structs.
+
+Instead of manually encoding and decoding messages, JavaStruct allows programmers to treat java classes as c structs.
+
+JavaStruct uses Java 5 annotations to mark Classes and fields as structs.
+
 = General usage =
 
 *JavaStruct* façade class is used to pack and unpack struct classes. Below is a simple unit test method for checking a struct class. 
@@ -24,7 +30,7 @@
 	}
 }}}
 
-= Primitives and Arrays =
+= Primitives =
 
 Using primitives. Note that private and protected fields requires appropriate getter and setter methods. Transient fields are automatically excluded.
 
