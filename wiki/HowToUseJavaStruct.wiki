@@ -87,4 +87,36 @@ public class PublicPrimitives implements Serializable {
 
 = Arrays =
 
-Arrays have some prerequisites
+Arrays have some prerequisites. When unpacking, sufficent space should be reserved in the array. 
+
+{{{
+@StructClass
+public class PublicPrimitiveArrays{
+	@StructField(order = 0)
+	public byte[] b;
+
+	@StructField(order = 1)
+	public char[] c;
+
+	@StructField(order = 2)
+	public short[] s;
+
+	@StructField(order = 3)
+	public int[] i;
+}
+}}}
+
+== Array Length Markers ==
+
+{{{
+@StructClass
+public class LengthMarkers {
+
+	@ArrayLengthMarker (fieldName = "buffer")
+	@StructField(order = 0)
+	public int bufferLength;
+
+	@StructField(order = 1)
+	public byte[] buffer;
+}
+}}}
