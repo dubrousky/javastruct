@@ -74,12 +74,13 @@ public class PublicPrimitives implements Serializable {
 	public boolean equals(Object o){
 		PublicPrimitives other = (PublicPrimitives)o;
 		return (this.b == other.b 
-				&& this.c == other.c
-				&& this.s == other.s
-				&& this.i == other.i
-				&& this.lo == other.lo
-				&& this.f == other.f
-				&& this.d == other.d);
+			&& this.c == other.c
+			&& this.s == other.s
+			&& this.i == other.i
+			&& this.lo == other.lo
+			&& this.f == other.f
+			&& this.d == other.d);
 	}
 }
 }}}
+
