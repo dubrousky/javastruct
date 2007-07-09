@@ -5,7 +5,8 @@
 
 = General usage =
 
-"Struct" façade class is used to pack and unpack struct classes.
+*JavaStruct* façade class is used to pack and unpack struct classes. Below is a simple unit test method for checking a struct class. 
+
 {{{
 	public void testPublicPrimitives(){
 		PublicPrimitives pp = new PublicPrimitives();
@@ -23,7 +24,7 @@
 	}
 }}}
 
-= Using Primitives =
+= Primitives and Arrays =
 
 Using primitives. Note that private and protected fields requires appropriate getter and setter methods. Transient fields are automatically excluded.
 
@@ -84,3 +85,6 @@ public class PublicPrimitives implements Serializable {
 }
 }}}
 
+= Arrays =
+
+Arrays have some prerequisites
