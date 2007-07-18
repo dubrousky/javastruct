@@ -71,36 +71,7 @@ public class StructUtils {
     }
 
     /**
-     * TODO: discard this by the power of annotations
-     *
-     * @param currentObject Object
-     * @param lengthFields Vector
-     * @param lengthValues Vector
-     * @param current Field
-     * @return java.lang.Object
-     * @throws IllegalArgumentException
-     * @throws IllegalAccessException
-     */
-    public static Object isLengthtedArray(Object currentObject, Vector lengthFields, Vector lengthValues, Field current)
-                                         throws IllegalArgumentException, IllegalAccessException{
-        for(int i=0; i<lengthFields.size(); i++){
-            Field lengthField = (Field)lengthFields.elementAt(i);
-            if (current.getType().isArray()){
-                String name = lengthField.getName();
-                if (((name.endsWith("Length") && name.substring(0,name.length()-6).equals(current.getName()))
-                    || (name.endsWith("Boy") && name.substring(0,name.length()-3).equals(current.getName())))
-                    ) {
-                    return lengthValues.elementAt(i);
-                 }
-              }
-         }
-      return null;
-   }
-
-
-    /**
      * Does this field requires a getter or setter?.
-     *
      * @param modifier , modifier mask
      * @return : true if field requires getter - setter. false otherwise
      */

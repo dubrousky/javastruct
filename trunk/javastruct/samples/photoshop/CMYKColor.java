@@ -36,7 +36,8 @@ public class CMYKColor {
 	}
 	
 	public String toString(){
-		return "C:" + ((int)cyan & 0xFF) 
+		return "Color : " + name 
+		+ " C:" + ((int)cyan & 0xFF) 
 		+ " M:" + ((int)magenta & 0xFF) 
 		+ " Y:" + ((int)yellow & 0xFF) 
 		+ " K:" + ((int)key & 0xFF); 
