@@ -25,6 +25,10 @@ public class RGBColor{
 		this.red = (byte)red;
 		this.green = (byte)green;
 		this.blue = (byte)blue;
-		this.name = new AString("R:" + red + " G:" +green + " B:" + blue);
+		this.name = new AString("R:" + red + " G:" + green + " B:" + blue);
+	}
+	
+	public String toString(){
+		return "R:" + red + " G:" + green + " B:" + blue;
 	}
 }

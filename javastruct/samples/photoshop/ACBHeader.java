@@ -54,13 +54,10 @@ public class ACBHeader {
 	
 	/*
 	Color Space Identifier:
-    1 = HSB
-    3 = Pantone
-    4 = Focaltone
-    5 = Trumatch
-    6 = Toyo
-    8 = Grayscale
-    10 = HKS
+    0 = RGB
+    2 = CMYK
+    7 = Lab
+    ...
     */
 	@StructField (order = 10)
 	public short ColorSpaceID;
