@@ -26,7 +26,7 @@ public class ACBHeader {
 	
 	// Unique identifier..
 	@StructField (order = 2)
-	public int colorBookIdentifier;
+	public short colorBookIdentifier;
 	
 	@StructField (order = 3)
 	public AString title;
@@ -62,20 +62,29 @@ public class ACBHeader {
 	@StructField (order = 10)
 	public short ColorSpaceID;
 	
-	public ACBHeader(String title, short colorSpace, int colorCount){
+	public ACBHeader(String title, short colorSpace, int colorCount, 
+			String colorNamePrefix, String colorNamePostfix, String description){
 		this.fileVersion = 0x0001;
 		this.title = new AString(title);
-		this.colorNamePrefix = new AString("la");
-		this.colorNamePostfix = new AString("lo");
-		this.description = new AString("copyright magnetiq ;)");
+		this.colorNamePrefix = new AString(colorNamePrefix);
+		this.colorNamePostfix = new AString(colorNamePostfix);
+		this.description = new AString(description);
 		this.ColorSpaceID = colorSpace;
 		this.colorCount = (short) colorCount;
 		this.colorsPerPage = 16;
 		this.pageSelectorOffset = 0;
 	}
 	
+	public ACBHeader(){
+		this.title = new AString("");
+		this.colorNamePrefix = new AString("");
+		this.colorNamePostfix = new AString("");
+		this.description = new AString("");
+	}
+	
+	
 	public String toString(){
-		String str = "ACB Color Book";
+		String str = "ACB Color Book\n";
 		str += "Title: " + this.title + "\n";
 		str += "Color Name Prefix: " + this.colorNamePrefix + "\n";
 		str += "Color Name Postfix: " + this.colorNamePostfix + "\n";
