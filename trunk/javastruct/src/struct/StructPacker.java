@@ -34,7 +34,7 @@ public class StructPacker extends StructOutputStream{
 	 * Serialize Object as a struct
 	 */
 	public void writeObject( Object obj) throws StructException{
-        if(obj == null)	throw new StructException("Struct classes cant be null.");
+        if(obj == null)	throw new StructException("Struct classes cant be null. ");
         StructData info = StructUtils.getStructInfo(obj);
 
         Vector<Field> lengthedArrayFields = new Vector<Field>();
@@ -44,6 +44,7 @@ public class StructPacker extends StructOutputStream{
         int arrayLength = 0;
 
 		for (Field currentField : info.getFields()) {
+			System.out.println("Processing field: " + currentField.getName());
 			StructFieldData fieldData = info.getFieldData(currentField.getName());
 			if(fieldData == null) {
 				throw new StructException("Field Data not found for field: " + currentField.getName());

@@ -32,69 +32,53 @@ public class StructUnpacker extends StructInputStream {
     }
 
     public void readObject( Object obj) throws StructException{
-        if(obj == null)  throw new StructException("Object cannot be null.");
+        if(obj == null)  throw new StructException("Struct objects cannot be null.");
         StructData info = StructUtils.getStructInfo(obj);
         Field[] fields = info.getFields();
-
-        // lenghted Fields.
-        Vector<Field> lengthedArrayFields = new Vector<Field>();
-        // length Field values
-        Vector<Object> lengthedArrayFieldValues = new Vector<Object>(); 
-        boolean lengthedArray = false;
-        boolean lengthedArrayField = false;
-        int arrayLength = 0;
 
         for (Field currentField : fields) {
 			StructFieldData fieldData = info.getFieldData(currentField.getName());
 			if(fieldData == null) {
 				throw new StructException("Field Data not found for field: " + currentField.getName());
 			}        
-            lengthedArray = false; 
-            lengthedArrayField = false; 
-            arrayLength = 0;
-
-            // Modifier mask check (public, private, protected)
+            int arrayLength = -1;
+            boolean lengthedArray = false;
             try{
             	if(info.isLenghtedArray(currentField)){
-            		lengthedArrayFields.add(currentField);
-            		lengthedArrayField = true;
-            	}
-            	else {
-            		Object temp = StructUtils.isLengthtedArray( obj, lengthedArrayFields,
-            				lengthedArrayFieldValues,currentField);
-            		if(temp != null){
-            			Number n = (Number) temp;
-            			arrayLength = n.intValue();
-            			lengthedArray = true;
+            		Field f = info.getLenghtedArray(currentField.getName());
+            		StructFieldData lengthMarker = info.getFieldData(f.getName());
+            		if (lengthMarker.requiresGetterSetter()) {
+            			arrayLength = ((Number)lengthMarker.getGetter().invoke( obj, (Object[])null)).intValue();
+            		} else {
+            			arrayLength = ((Number)lengthMarker.getField().get(obj)).intValue();
             		}
+	       			lengthedArray = true;
             	}
             	// For private and protected fields, use getFieldName or veya isFieldName
             	if ( fieldData.requiresGetterSetter()){
             		Method getter = fieldData.getGetter();
             		Method setter = fieldData.getSetter();
-            		if(getter != null && setter != null){
-            			if(lengthedArray && arrayLength >= 0){
-            				Object ret = Array.newInstance(currentField.getType().getComponentType(),arrayLength);
-            				setter.invoke(obj,new Object[]{ret});
-            				if(currentField.getType().getComponentType().isPrimitive() == false){
-            					Object[] array = (Object[])ret;
-            					for(int j=0; j<arrayLength; j++){
-            						array[j] =  currentField.getType().getComponentType().newInstance();
-            					}
-            				}
-            			}
-            			if(lengthedArray == false && currentField.getType().isArray()){
-            				if(getter.invoke (obj, (Object[])null)== null){
-            					throw new StructException("Arrays cannot be null :"+ currentField.getName());
-            				}
-            			}
-            			readField(currentField,getter,setter,obj);
-            			if (lengthedArrayField)
-            				lengthedArrayFieldValues.add(getter.invoke( obj, (Object[])null));
-            		}
-            		else{
+            		
+            		if(getter == null || setter == null){
             			throw new StructException(" getter/setter required for : "+ currentField.getName());
             		}
+            		
+            		if(lengthedArray && arrayLength >= 0){
+            			Object ret = Array.newInstance(currentField.getType().getComponentType(),arrayLength);
+            			setter.invoke(obj,new Object[]{ret});
+            			if(currentField.getType().getComponentType().isPrimitive() == false){
+            				Object[] array = (Object[])ret;
+            				for(int j=0; j<arrayLength; j++){
+            					array[j] =  currentField.getType().getComponentType().newInstance();
+            				}
+            			}
+            		}
+            		if(lengthedArray == false && currentField.getType().isArray()){
+            			if(getter.invoke (obj, (Object[])null) == null){
+            				throw new StructException("Arrays can not be null :"+ currentField.getName());
+            			}
+            		}
+            		readField(currentField,getter,setter,obj);
             	}
             	// If public, use directly.
             	else {
@@ -108,18 +92,14 @@ public class StructUnpacker extends StructInputStream {
             				}
             			}
             		}
-            		if(lengthedArray == false &&
-            				currentField.getType().isArray()){
+            		if(lengthedArray == false && currentField.getType().isArray()){
             			if(currentField.get(obj)== null){
-            				throw new StructException("Lenghted arays ca not be null. : "+ currentField.getName());
+            				throw new StructException("Arrays can not be null. : "+ currentField.getName());
             			}
             		}
-            		// If length is negative, it means it is null.
             		if(lengthedArray == false || (lengthedArray == true && arrayLength >= 0)){
             			readField(currentField, null, null, obj);
             		}
-            		if (lengthedArrayField)
-            			lengthedArrayFieldValues.add(currentField.get(obj));
             	}
             }
             catch (Exception e) {
@@ -127,5 +107,4 @@ public class StructUnpacker extends StructInputStream {
             }
         }
     }
-
 }

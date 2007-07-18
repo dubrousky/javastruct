@@ -19,7 +19,7 @@ public class StructUtils {
      * @return telays.util.struct.StructInfo
      * @throws StructException
      */
-    public static StructData getStructInfo(Object obj) throws StructException{
+    public static synchronized StructData getStructInfo(Object obj) throws StructException{
         StructData info = structInfoCache.get(obj.getClass().getName());
         if(info != null) {
             return info;
@@ -67,7 +67,7 @@ public class StructUtils {
         if ((modifiers & Modifier.PUBLIC) == 0)
             throw new StructException("Struct operations are only accessible for public classes. Class: " + obj.getClass().getName());
         if ((modifiers & (Modifier.INTERFACE | Modifier.ABSTRACT)) != 0)
-            throw new StructException("Struct operations are not accessible for abstract classes and ınterfaces. Class: " + obj.getClass().getName());
+            throw new StructException("Struct operations are not accessible for abstract classes and interfaces. Class: " + obj.getClass().getName());
     }
 
     /**

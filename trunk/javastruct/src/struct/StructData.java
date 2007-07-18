@@ -38,11 +38,14 @@ public class StructData {
 			ArrayLengthMarker lengthMarker = field.getAnnotation(ArrayLengthMarker.class);
 			if (lengthMarker != null) {
 				fieldData.setArrayLengthMarker(true);
-				lengthedArrayFields.put(field.getName(), field);
+				//lengthedArrayFields.put(field.getName(), field);
+				System.out.println("Length marker field: " + field.getName() + " Array Field: "+ lengthMarker.fieldName());
 				int i= 0;
 				for(; i<fields.length ;i++){
 					if (lengthMarker.fieldName().equals(fields[i].getName())) {
 						fieldData.setArrayWithDefinedLength(fields[i]);
+						System.out.println("Array : " + fields[i].getName() + "  its length is defined in " + field.getName());
+						lengthedArrayFields.put(fields[i].getName(), field);
 						break;
 					}
 				}
