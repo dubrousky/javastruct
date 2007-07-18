@@ -21,14 +21,19 @@ public class RGBColor{
 	@StructField (order = 4)
 	public byte blue;
 	
-	public RGBColor(int red, int blue, int green){
+	public RGBColor(int red, int blue, int green, String name){
 		this.red = (byte)red;
 		this.green = (byte)green;
 		this.blue = (byte)blue;
-		this.name = new AString("R:" + red + " G:" + green + " B:" + blue);
+		this.name = new AString(name);
+	}
+	
+	public RGBColor(){
 	}
 	
 	public String toString(){
-		return "R:" + red + " G:" + green + " B:" + blue;
+		return "R:" + ((int)red & 0xFF) 
+		+ " G:" + ((int)green & 0xFF) 
+		+ " B:" + ((int)blue & 0xFF); 
 	}
 }

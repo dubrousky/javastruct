@@ -37,6 +37,7 @@ public class StructUnpacker extends StructInputStream {
         Field[] fields = info.getFields();
 
         for (Field currentField : fields) {
+			//System.out.println("Processing field: " + currentField.getName());
 			StructFieldData fieldData = info.getFieldData(currentField.getName());
 			if(fieldData == null) {
 				throw new StructException("Field Data not found for field: " + currentField.getName());

@@ -19,6 +19,9 @@ public class AString {
 		this.chars = content.toCharArray();
 	}
 	
+	public AString(){
+	}
+	
 	public String toString(){
 		return new String(chars);
 	}
