@@ -37,54 +37,38 @@ public class StructPacker extends StructOutputStream{
         if(obj == null)	throw new StructException("Struct classes cant be null. ");
         StructData info = StructUtils.getStructInfo(obj);
 
-        Vector<Field> lengthedArrayFields = new Vector<Field>();
-        Vector<Object> lengthedArrayFieldValues = new Vector<Object>();
         boolean lengthedArray = false;
-        boolean lengthedArrayField = false;
         int arrayLength = 0;
 
 		for (Field currentField : info.getFields()) {
-			System.out.println("Processing field: " + currentField.getName());
+			//System.out.println("Processing field: " + currentField.getName());
 			StructFieldData fieldData = info.getFieldData(currentField.getName());
 			if(fieldData == null) {
 				throw new StructException("Field Data not found for field: " + currentField.getName());
 			}
             lengthedArray = false; 
-            lengthedArrayField = false; 
             arrayLength = 0;
             try{
             	if(fieldData.isArrayLengthMarker()){
-            		lengthedArrayFields.add(currentField);
-            		lengthedArrayField = true;
-            	}
-            	else {
-            		if(currentField.getType().isArray()) {
-            			Object temp = StructUtils.isLengthtedArray( obj, lengthedArrayFields, lengthedArrayFieldValues, currentField);
-            			if(temp != null){
-            				arrayLength = ((Number)temp).intValue();
-            				lengthedArray = true;
-            			}
+            		if (fieldData.requiresGetterSetter()) {
+            			arrayLength = ((Number)fieldData.getGetter().invoke( obj, (Object[])null)).intValue();
+            		} else {
+            			arrayLength = ((Number)fieldData.getField().get(obj)).intValue();
             		}
+            		lengthedArray = true;
             	}
             	if ( fieldData.requiresGetterSetter()){
-            		Method getter = fieldData.getGetter();
-            		if (lengthedArrayField)
-            			lengthedArrayFieldValues.add(getter.invoke( obj, (Object[])null));
             		if(lengthedArray && arrayLength >= 0){
-            			writeField(currentField, getter, obj, arrayLength);
+            			writeField(currentField, fieldData.getGetter(), obj, arrayLength);
             		}
-            		else writeField(currentField, getter, obj, -1);
+            		else writeField(currentField, fieldData.getGetter(), obj, -1);
             	}
             	// Field is public. Access directly.
             	else {
-            		if (lengthedArrayField)
-            			lengthedArrayFieldValues.add(currentField.get(obj));
-            		if(lengthedArray){
-            			// Array is null if Length is negative.
-            			if(arrayLength >= 0){
+            		if(lengthedArray && arrayLength >= 0){
             				writeField(currentField, null, obj, arrayLength);
-            			}
             		}
+            		// Array is null if Length is negative.
             		else {
             			writeField(currentField, null, obj, -1);
             		}
@@ -95,6 +79,4 @@ public class StructPacker extends StructOutputStream{
             }
 		}
 	}
-
-
 }
