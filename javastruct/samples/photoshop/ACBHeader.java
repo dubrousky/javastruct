@@ -13,7 +13,7 @@ import struct.StructField;
 public class ACBHeader {
 	
 	public static final short RGB  = 0;
-	public static final short CMYK  = 2;	
+	public static final short CMYK = 2;	
 	public static final short LAB  = 7;
 	
 	// Signature is always ASCII characters "8BCB"
@@ -81,7 +81,6 @@ public class ACBHeader {
 		this.colorNamePostfix = new AString("");
 		this.description = new AString("");
 	}
-	
 	
 	public String toString(){
 		String str = "ACB Color Book\n";

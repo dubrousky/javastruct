@@ -7,7 +7,6 @@ import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.nio.ByteOrder;
 
 import struct.Constants.Primitive;
@@ -17,7 +16,6 @@ public abstract class StructOutputStream extends OutputStream {
 	protected DataOutput dataOutput;
 
 	public StructOutputStream(OutputStream outStream) {
-		// Default : BigEndian (non-Intel)
 		init(outStream, ByteOrder.BIG_ENDIAN);
 	}
 

@@ -8,12 +8,25 @@ import java.io.IOException;
 import java.nio.ByteOrder;
 
 import struct.JavaStruct;
-import struct.StructClass;
 import struct.StructException;
-import struct.StructField;
 import struct.StructPacker;
 import struct.StructUnpacker;
 
+/**
+ * A class for reading and writing Adobe Photoshop Color Book format.
+ * Format details is given in http://magnetiq.com/docs/PhotoshopColorBook.txt
+ * Thanks to Ates Goral for his help.
+ * 
+ * JavaStruct makes it very easy to read header information. But reading color
+ * datais tricky, because format changes depending to Color space idenifier
+ * (RGB, CMYK or Lab) we have to read them conditionally, and there is some
+ * repeated code.There could be a better way, but this is simpler to understand. 
+ * 
+ * Two example acb files are included in the project. They are used in the main
+ * method of this class.
+ * 
+ * @author mdakin
+ */
 public class AdobeColorBook {
 	ACBHeader header;
 	RGBColor[] rgbColors = null;
@@ -115,12 +128,12 @@ public class AdobeColorBook {
 	
 	public static void main(String[] args) {
 		AdobeColorBook anpaBook = new AdobeColorBook();
-		anpaBook.read("/home/mdakin/Color Books/ANPA Color.acb");
-		anpaBook.write("/home/mdakin/Color Books/ANPA_my_Color.acb");
+		anpaBook.read("ANPA Color.acb");
+		anpaBook.write("ANPA_my_Color.acb");
 		System.out.println(anpaBook);
 		
 		AdobeColorBook focoltoneBook = new AdobeColorBook();
-		focoltoneBook.read("/home/mdakin/Color Books/FOCOLTONE.acb");
+		focoltoneBook.read("FOCOLTONE.acb");
 		System.out.println(focoltoneBook);
 	}
 }

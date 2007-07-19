@@ -3,9 +3,7 @@ package struct;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.nio.ByteOrder;
-import java.util.Vector;
 
 public class StructPacker extends StructOutputStream{
 	protected ByteArrayOutputStream bos;
