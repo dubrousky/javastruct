@@ -32,7 +32,7 @@ public class RGBColor{
 	}
 	
 	public String toString(){
-		return "Color: " + name 
+		return "Name: " + name 
 		+ " R:" + ((int)red & 0xFF) 
 		+ " G:" + ((int)green & 0xFF) 
 		+ " B:" + ((int)blue & 0xFF); 

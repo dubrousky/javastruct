@@ -32,7 +32,7 @@ public class LabColor {
 	}
 	
 	public String toString(){
-		return "Color:" + name 
+		return "Name:" + name 
 		+ " L:" + ((int)lightness & 0xFF) 
 		+ " A:" + ((int)aChrom & 0xFF) 
 		+ " B:" + ((int)bChrom & 0xFF);

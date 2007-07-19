@@ -9,23 +9,20 @@ import java.util.Vector;
 
 public class StructPacker extends StructOutputStream{
 	protected ByteArrayOutputStream bos;
-	private Object objectToPack = null;
 
-    public StructPacker(Object objectToPack){
-        this(objectToPack, new ByteArrayOutputStream(), ByteOrder.BIG_ENDIAN);
+    public StructPacker(){
+        this(new ByteArrayOutputStream(), ByteOrder.BIG_ENDIAN);
     }
 
-    public StructPacker(Object objectToPack, ByteOrder order){
-    	this(objectToPack, new ByteArrayOutputStream(), order);
+    public StructPacker(ByteOrder order){
+    	this(new ByteArrayOutputStream(), order);
     }
 
-	public StructPacker(Object objectToPack, OutputStream os, ByteOrder order){
-        this.objectToPack = objectToPack ;
-        this.bos = (ByteArrayOutputStream)os;
-        super.init(bos, order);
+	public StructPacker(OutputStream os, ByteOrder order){
+        super.init(os, order);
 	}
 
-    public byte[] pack() throws StructException {
+    public byte[] pack(Object objectToPack) throws StructException {
         writeObject(objectToPack);
         return bos.toByteArray();
     }

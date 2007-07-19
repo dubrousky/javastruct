@@ -12,22 +12,20 @@ import java.util.Vector;
  * 
  */
 public class StructUnpacker extends StructInputStream {
-    private Object objectToUnpack = null;
 
-    public StructUnpacker(Object objectToUnpack, byte[] bufferToUnpack){
-        this(objectToUnpack, new ByteArrayInputStream(bufferToUnpack), ByteOrder.BIG_ENDIAN);
+    public StructUnpacker(byte[] bufferToUnpack){
+        this(new ByteArrayInputStream(bufferToUnpack), ByteOrder.BIG_ENDIAN);
     }
     
-    public StructUnpacker(Object objectToUnpack, byte[] bufferToUnpack, ByteOrder order){
-    	this(objectToUnpack, new ByteArrayInputStream(bufferToUnpack), order);
+    public StructUnpacker(byte[] bufferToUnpack, ByteOrder order){
+    	this(new ByteArrayInputStream(bufferToUnpack), order);
     }
     
-    public StructUnpacker(Object objectToUnpack, InputStream is, ByteOrder order){
-    	this.objectToUnpack = objectToUnpack;
+    public StructUnpacker(InputStream is, ByteOrder order){
     	super.init(is, ByteOrder.BIG_ENDIAN);
     }
 
-    public void unpack() throws StructException{
+    public void unpack(Object objectToUnpack) throws StructException{
         readObject(objectToUnpack);
     }
 

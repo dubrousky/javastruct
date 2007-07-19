@@ -1,0 +1,100 @@
+
+<project name="javastruct" default="java">
+
+    <!-- read the parameters from build.properties file.-->
+    <property file="build.properties"/>
+
+    <!-- source files. java, test, configuration files. -->
+    <property name="src.java" location="src"/>
+    <property name="src.test" location="test"/>
+
+    <!-- after compilation, where will we put the class files?. -->
+    <property name="build.dir" location="build"/>
+    <property name="build.java" location="build/java"/>
+    <property name="build.test" location="build/test"/>
+
+	<!--distribution -->
+    <property name="dist.dir" location="dist"/>
+    <property name="lib.runtime" location="lib"/>
+    
+    <!--    library files for runtime only.-->
+    <path id="classpath.runtime">
+        <fileset dir="lib"/>
+    </path>
+
+    <!--    Compiles the java files. and results will be copied to build directory-->
+    <target name="java" description="Compile">
+        <mkdir dir="${build.java}"/>
+        <javac srcdir="${src.java}"
+            destdir="${build.java}"/>
+        <copy todir="${build.java}">
+            <fileset dir="${src.java}">
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+
+        <mkdir dir="${build.test}"/>
+        <javac srcdir="${src.test}"
+            destdir="${build.test}"
+            debug="true" encoding="utf-8">
+            <classpath>
+                <path refid="classpath.build"/>
+                <pathelement path="${build.java}"/>
+            </classpath>
+        </javac>
+        <copy todir="${build.test}">
+            <fileset dir="${src.test}">
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+
+
+    <!--    Cleans the compiled files.-->
+    <target name="clean" description="Clean up built files">
+        <delete dir="${build.dir}"/>
+        <delete dir="${dist.dir}"/>
+        <echo message="All clean"/>
+    </target>
+
+    <target name="dist" depends="clean,java"
+        description="Generates distribution files">
+        <delete dir="${dist.dir}"/>
+        <mkdir dir="${dist.dir}"/>
+        <mkdir dir="${dist.dir}/lib"/>
+        <mkdir dir="${dist.dir}/config"/>
+         
+        <copy todir="${dist.dir}/lib">
+            <fileset dir="${lib.runtime}">
+            </fileset>
+        </copy>
+
+    	<copy todir="${dist.dir}/config">
+            <fileset dir="${src.config}">
+            </fileset>
+        </copy>
+    	
+        <copy todir="${dist.dir}/lisanslar">
+            <fileset dir="${licences.dir}">
+            </fileset>
+        </copy>
+    	
+    	<copy file="run.sh" todir="${dist.dir}" />
+    	<copy file="runtest_dbus.sh" todir="${dist.dir}" /> 
+    	<copy file="runtest_socket.sh" todir="${dist.dir}" />
+    	<copy file="zemberek-server.xml" todir="${dist.dir}" />
+        <tstamp>
+            <format property="release" pattern="-dMMMyy" locale="tr"/>
+        </tstamp>
+        <jar jarfile="${dist.dir}/${name}-${version}.jar" basedir="${build.java}">
+        </jar>
+        <!-- create the zip file with the same naming scheme -->
+        <zip destfile="${dist.dir}/${isim}-${surum}.zip"
+            basedir="${dist.dir}"
+            update="true"
+            excludes="**/*.zip"
+            />
+
+    </target>
+
+</project>

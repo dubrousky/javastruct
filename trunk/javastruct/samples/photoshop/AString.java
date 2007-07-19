@@ -25,5 +25,4 @@ public class AString {
 	public String toString(){
 		return new String(chars);
 	}
-
 }

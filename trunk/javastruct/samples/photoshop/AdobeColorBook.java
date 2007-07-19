@@ -8,27 +8,47 @@ import java.io.IOException;
 import java.nio.ByteOrder;
 
 import struct.JavaStruct;
+import struct.StructClass;
 import struct.StructException;
+import struct.StructField;
 import struct.StructPacker;
 import struct.StructUnpacker;
 
 public class AdobeColorBook {
 	ACBHeader header;
+	RGBColor[] rgbColors = null;
+	CMYKColor[] cmykColors = null;
+	LabColor[] labColors = null;
 	
-	public static void read(String acbFile){
+	public void read(String acbFile){
 		try {
 			FileInputStream fis = new FileInputStream(new File(acbFile));
-			ACBHeader header = new ACBHeader();
-			StructUnpacker up = new StructUnpacker(header , fis, ByteOrder.BIG_ENDIAN);
+			header = new ACBHeader();
+			StructUnpacker up = JavaStruct.getUnpacker(fis, ByteOrder.BIG_ENDIAN);
 			up.readObject(header);
-			System.out.println(header);
-			LabColor[] colors = new LabColor[header.colorCount];
-			for(int i=0; i<header.colorCount; i++){
-				colors[i] = new LabColor();
-				up.readObject(colors[i]);
-			}
-			for (int i = 0; i < colors.length; i++) {
-				System.out.println(colors[i]);
+			switch(header.ColorSpaceID){
+				case ACBHeader.RGB :
+					rgbColors = new RGBColor[header.colorCount];
+					for(int i=0; i<header.colorCount; i++){
+						rgbColors[i] = new RGBColor();
+						up.readObject(rgbColors[i]);
+					}
+					break;
+				case ACBHeader.CMYK :
+					cmykColors = new CMYKColor[header.colorCount];
+					for(int i=0; i<header.colorCount; i++){
+						cmykColors[i] = new CMYKColor();
+						up.readObject(cmykColors[i]);
+					}
+					break;
+				case ACBHeader.LAB :
+					labColors = new LabColor[header.colorCount];
+					for(int i=0; i<header.colorCount; i++){
+						labColors[i] = new LabColor();
+						up.readObject(labColors[i]);
+					}
+					break;
+				default:
 			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -37,21 +57,28 @@ public class AdobeColorBook {
 		}
 	}
 	
-	public static void write(String name){
-		int colorCount = 16;
-		ACBHeader header = new ACBHeader("Magnetiq", ACBHeader.RGB , colorCount, "la", "lo", "JavaStruct Test");
-		RGBColor[] colors = new RGBColor[colorCount];
-		for (int i=0 ; i < 16; i ++){
-			colors[i] = new RGBColor(255/(i+1), 255/(i+1), 255/(i+1), "rgb"+i);
-		}
-		
+	public void write(String name){
 		try{
-			FileOutputStream fo = new FileOutputStream(new File("magnetiq.acb"));
-			byte[] headerData = JavaStruct.pack(header);
-			fo.write(headerData);
-			for(int i=0; i<colorCount; i++){
-				byte[] colorData = JavaStruct.pack(colors[i]);
-				fo.write(colorData);
+			FileOutputStream fo = new FileOutputStream(new File(name));
+			StructPacker packer = JavaStruct.getPacker(fo, ByteOrder.BIG_ENDIAN);
+			packer.writeObject(header);
+			switch(header.ColorSpaceID){
+				case ACBHeader.RGB :
+					for(RGBColor color : rgbColors){
+						packer.writeObject(color);
+					}
+					break;
+				case ACBHeader.CMYK :
+					for(CMYKColor color : cmykColors){
+						packer.writeObject(color);
+					}
+					break;
+				case ACBHeader.LAB :
+					for(LabColor color : labColors){
+						packer.writeObject(color);
+					}
+					break;
+				default:
 			}
 			fo.close();
 		} catch(StructException e){
@@ -61,7 +88,39 @@ public class AdobeColorBook {
 		}
 	}
 	
+	public String toString(){
+		String str = "";
+		if (header != null){
+			str += header;
+		}
+		switch(header.ColorSpaceID){
+		case ACBHeader.RGB :
+			for(RGBColor color : rgbColors) {
+				str += color + "\n";
+			}
+			break;
+		case ACBHeader.CMYK :
+			for(CMYKColor color : cmykColors) {
+				str += color + "\n";
+			}
+			break;
+		case ACBHeader.LAB :
+			for(LabColor color : labColors) {
+				str += color + "\n";
+			}
+			break;
+		}
+		return str;
+	}
+	
 	public static void main(String[] args) {
-		read("/home/mdakin/Color Books/ANPA Color.acb");
+		AdobeColorBook anpaBook = new AdobeColorBook();
+		anpaBook.read("/home/mdakin/Color Books/ANPA Color.acb");
+		anpaBook.write("/home/mdakin/Color Books/ANPA_my_Color.acb");
+		System.out.println(anpaBook);
+		
+		AdobeColorBook focoltoneBook = new AdobeColorBook();
+		focoltoneBook.read("/home/mdakin/Color Books/FOCOLTONE.acb");
+		System.out.println(focoltoneBook);
 	}
 }
