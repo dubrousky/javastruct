@@ -76,8 +76,8 @@ public abstract class StructInputStream extends InputStream {
     		  if(setter != null){
     			  Object object = getter.invoke(obj,(Object[])null);
     			  if(object == null){
-    				  if(field.getName().endsWith("FixedString")){
-    					  throw new StructException("FixedString objects should be initialized :" + field.getName());
+    				  if(field.getName().endsWith("CString")){
+    					  throw new StructException("CString objects should be initialized :" + field.getName());
     				  }
     				  object = field.getType().newInstance();
     			  }
@@ -153,8 +153,8 @@ public abstract class StructInputStream extends InputStream {
 			throws IllegalArgumentException, StructException, IOException,
 			InstantiationException, IllegalAccessException {
 		if (field.get(obj) == null) {
-			if (field.getType().getName().endsWith("FixedString")) {
-				throw new StructException("FixedString objects should be initialized before unpacking :"
+			if (field.getType().getName().endsWith("CString")) {
+				throw new StructException("CString objects should be initialized before unpacking :"
 								+ field.getName());
 			}
 			field.set(obj, field.getType().newInstance());
