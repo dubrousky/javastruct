@@ -7,6 +7,8 @@ JavaStruct is also ideal for reading and writing special binary file formats. In
 
 For complete code please go to : http://javastruct.googlecode.com/svn/trunk/javastruct/samples/photoshop/
 
+*Note:* I am aware that writing such a reader - writer is also not very difficult (even shorter) using a nio ByteBuffer. But JavaStruct offers cleaner and more manageable code. And if there are lots of binary file types or messages, hand-writing all encoding and decoding would be very error-prone and problematic.
+
 = Header =
 In the header, we have special string fields. 
 {{{
