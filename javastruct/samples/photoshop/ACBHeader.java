@@ -76,10 +76,6 @@ public class ACBHeader {
 	}
 	
 	public ACBHeader(){
-		this.title = new AString("");
-		this.colorNamePrefix = new AString("");
-		this.colorNamePostfix = new AString("");
-		this.description = new AString("");
 	}
 	
 	public String toString(){
