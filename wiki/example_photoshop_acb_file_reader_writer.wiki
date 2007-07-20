@@ -5,6 +5,8 @@
 
 JavaStruct is also ideal for reading and writing special binary file formats. In this example we will write a Photoshop Color book file reader-writer. The details of the format can be found [http://magnetiq.com/docs/PhotoshopColorBook.txt here]. 
 
+For complete code please go to : http://javastruct.googlecode.com/svn/trunk/javastruct/samples/photoshop/
+
 = Header =
 In the header, we have special string fields. 
 {{{
