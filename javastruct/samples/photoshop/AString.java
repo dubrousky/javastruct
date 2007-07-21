@@ -6,23 +6,23 @@ import struct.StructField;
 
 @StructClass
 public class AString {
-	
-	@StructField (order = 0 )
-	@ArrayLengthMarker (fieldName = "chars")
+
+	@StructField(order = 0)
+	@ArrayLengthMarker(fieldName = "chars")
 	public int length;
-	
-	@StructField (order = 1)
+
+	@StructField(order = 1)
 	public char[] chars;
-	
-	public AString(String content){
+
+	public AString(String content) {
 		this.length = content.length();
 		this.chars = content.toCharArray();
 	}
-	
-	public AString(){
+
+	public AString() {
 	}
-	
-	public String toString(){
+
+	public String toString() {
 		return new String(chars);
 	}
 }
