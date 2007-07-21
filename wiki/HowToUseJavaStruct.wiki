@@ -7,7 +7,7 @@ Struct classes can be used to greatly simplfy network protocol codes of Java app
 
 Instead of manually encoding and decoding messages, JavaStruct allows programmers to treat java classes as c structs.
 
-JavaStruct uses Java 5 annotations to mark Classes and fields as structs.
+JavaStruct uses Java 5 annotations to mark Classes and fields as structs. JavaStruct is not the first attempt to provide struct like functionality, Jean-Marie Dautelle's [http://javolution.org/ Javolution] library also has an excellent [http://javolution.org/api/javolution/io/Struct.html struct] implementation. But instead of using special classes in Javolution, POJO approach is preferred JavaStruct. 
 
 = General usage =
 
@@ -16,8 +16,10 @@ JavaStruct uses Java 5 annotations to mark Classes and fields as structs.
 {{{
 @StructClass
 public class Foo{
+
     @StructField(order = 0)
     public byte b;
+
     @StructField(order = 1)
     public int i;
 }
