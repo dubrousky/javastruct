@@ -2,9 +2,10 @@ package struct;
 
 import java.io.Serializable;
 
-@SuppressWarnings("serial")
 @StructClass
 public class PrivatePrimitiveArrays implements Serializable {
+	private static final long serialVersionUID = 5211328614125606654L;
+
 	@StructField(order = 0)
 	private byte[] b;
 	@StructField(order = 1)

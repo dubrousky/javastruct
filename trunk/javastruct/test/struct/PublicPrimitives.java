@@ -2,9 +2,9 @@ package struct;
 
 import java.io.Serializable;
 
-@SuppressWarnings("serial")
 @StructClass
 public class PublicPrimitives implements Serializable {
+	private static final long serialVersionUID = -4918700323842892403L;
 	@StructField(order = 0)
 	public byte b;
 	@StructField(order = 1)
@@ -19,7 +19,7 @@ public class PublicPrimitives implements Serializable {
 	public float f;
 	@StructField(order = 6)
 	public double d;
-	
+
 	transient int blah;
 	transient double foo;
 
@@ -32,15 +32,11 @@ public class PublicPrimitives implements Serializable {
 		f = 3.14f;
 		d = 3.141d;
 	}
-	
-	public boolean equals(Object o){
-		PublicPrimitives other = (PublicPrimitives)o;
-		return (this.b == other.b 
-				&& this.c == other.c
-				&& this.s == other.s
-				&& this.i == other.i
-				&& this.lo == other.lo
-				&& this.f == other.f
-				&& this.d == other.d);
+
+	public boolean equals(Object o) {
+		PublicPrimitives other = (PublicPrimitives) o;
+		return (this.b == other.b && this.c == other.c && this.s == other.s
+				&& this.i == other.i && this.lo == other.lo
+				&& this.f == other.f && this.d == other.d);
 	}
 }

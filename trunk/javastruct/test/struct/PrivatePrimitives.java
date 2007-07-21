@@ -2,9 +2,10 @@ package struct;
 
 import java.io.Serializable;
 
-@SuppressWarnings("serial")
 @StructClass
-public class PrivatePrimitives implements Serializable  {
+public class PrivatePrimitives implements Serializable {
+	private static final long serialVersionUID = 8155926269697741970L;
+
 	@StructField(order = 0)
 	private byte b;
 	@StructField(order = 1)
@@ -32,17 +33,13 @@ public class PrivatePrimitives implements Serializable  {
 		f = 3.14f;
 		d = 3.141d;
 	}
-	
-	public boolean equals(Object o){
-		PrivatePrimitives other = (PrivatePrimitives)o;
-		return (this.b == other.b 
-				&& this.c == other.c
-				&& this.s == other.s
-				&& this.i == other.i
-				&& this.lo == other.lo
-				&& this.f == other.f
-				&& this.d == other.d);
-	}	
+
+	public boolean equals(Object o) {
+		PrivatePrimitives other = (PrivatePrimitives) o;
+		return (this.b == other.b && this.c == other.c && this.s == other.s
+				&& this.i == other.i && this.lo == other.lo
+				&& this.f == other.f && this.d == other.d);
+	}
 
 	public byte getB() {
 		return b;
