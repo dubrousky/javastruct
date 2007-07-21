@@ -1,7 +1,5 @@
 package struct;
 
-
-
 import java.text.DecimalFormat;
 import java.util.HashMap;
 
@@ -64,7 +62,7 @@ public class TimeTracker {
 
     public static String getElapsedTimeString(String name){
 		NanoTimerElement timer = users.get(name);
-		if(timer == null) return "Ge�ersiz Kronometre: " + name;;
+		if(timer == null) return "Invalid chronometer: " + name;;
 		timer.refresh();
         return "Delta: " + formatter.format((double)timer.getDiff()/BILLION) +  " s. Elapsed: "
                + formatter.format((double)timer.getElapsedTime()/BILLION) + " s.";
@@ -72,21 +70,21 @@ public class TimeTracker {
 
 	public static String getElapsedTimeStringAsMicros(String name){
 		NanoTimerElement timer = users.get(name);
-		if(timer == null) return "Ge�ersiz Kronometre: " + name;;
+		if(timer == null) return "Invalid chronometer: " + name;;
 		timer.refresh();
 		return "Delta: " + timer.getDiff()/1000 +  "mics. Elapsed: " + timer.getElapsedTime()/1000 +" mics.";
 	}
 
     public static String getElapsedTimeStringAsNanos(String name){
         NanoTimerElement timer = users.get(name);
-        if(timer == null) return "Ge�ersiz Kronometre: " + name;;
+        if(timer == null) return "Invalid chronometer: " + name;;
         timer.refresh();
         return "Delta: " + timer.getDiff()/1000 +  "nanos. Elapsed: " + timer.getElapsedTime() +" nanos.";
     }
 
    public static String getElapsedTimeStringAsMillis(String name){
        NanoTimerElement timer = users.get(name);
-       if(timer == null) return "Ge�ersiz Kronometre: " + name;;
+       if(timer == null) return "Invalid chronometer: " + name;;
        timer.refresh();
        return "Delta: " + timer.getDiff()/MILLION +  "ms. Elapsed: " + timer.getElapsedTime()/MILLION +" ms.";
    }
@@ -103,18 +101,13 @@ public class TimeTracker {
 
     public static String stopClock(String name){
         NanoTimerElement timer = users.get(name);
-        if(timer == null) return name + " : Ge�ersiz Kronometre";
+        if(timer == null) return name + " : Invalid chronometer";
         timer.refresh();
         users.remove(name);
-        return "" + (double)timer.elapsedTime/BILLION + "sn." + "("+ timer.elapsedTime/MILLION +" ms)";
+        return "" + (double)timer.elapsedTime/BILLION + "s." + "("+ timer.elapsedTime/MILLION +" ms)";
     }
 }
 
-/**
- * isimlendirilmi� Zaman bilgisi ta��y�c�. dandik bir s�n�f i�te.
- *
- * @author MDA
- */
 class NanoTimerElement {
 	String name;
 	long startTime= 0;

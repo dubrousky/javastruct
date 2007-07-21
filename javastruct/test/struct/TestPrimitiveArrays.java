@@ -21,7 +21,7 @@ public class TestPrimitiveArrays extends TestCase {
 			assertFalse(Util.arraysEqual(ppa.lo, ppa2.lo));
 			assertFalse(Util.arraysEqual(ppa.f, ppa2.f));
 			assertFalse(Util.arraysEqual(ppa.d, ppa2.d));
-			
+
 			JavaStruct.unpack(ppa2, b);
 			// Now they should be equal
 			assertTrue(Util.arraysEqual(ppa.b, ppa2.b));
@@ -36,7 +36,7 @@ public class TestPrimitiveArrays extends TestCase {
 			fail();
 		}
 	}
-	
+
 	public void testPrivatePrimitiveArrays() {
 		PrivatePrimitiveArrays ppa = new PrivatePrimitiveArrays();
 		ppa.init(10);
@@ -54,7 +54,7 @@ public class TestPrimitiveArrays extends TestCase {
 			assertFalse(Util.arraysEqual(ppa.getLo(), ppa2.getLo()));
 			assertFalse(Util.arraysEqual(ppa.getF(), ppa2.getF()));
 			assertFalse(Util.arraysEqual(ppa.getD(), ppa2.getD()));
-			
+
 			JavaStruct.unpack(ppa2, b);
 			// Now they should be equal
 			assertTrue(Util.arraysEqual(ppa.getB(), ppa2.getB()));
@@ -68,7 +68,6 @@ public class TestPrimitiveArrays extends TestCase {
 			e.printStackTrace();
 			fail();
 		}
-	}	
-	
+	}
 
 }
