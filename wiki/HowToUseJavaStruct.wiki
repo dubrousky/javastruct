@@ -41,8 +41,17 @@ catch(StructException e){
 
 Struct operations throws a checked StructException if anything goes wrong.
 
-Struct classes can be used with Streams directly too.
+Struct classes can be used with Streams directly too. Please refer to Photoshop ACB file reader [http://code.google.com/p/javastruct/wiki/example_photoshop_acb_file_reader_writer example].
 
+{{{
+public void read(String acbFile){
+    try {
+	FileInputStream fis = new FileInputStream(new File(acbFile));
+	header = new ACBHeader();
+	StructUnpacker up = JavaStruct.getUnpacker(fis, ByteOrder.BIG_ENDIAN);
+	up.readObject(header);
+...
+}}}
 
 = Primitives =
 
