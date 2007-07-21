@@ -11,24 +11,36 @@ JavaStruct uses Java 5 annotations to mark Classes and fields as structs.
 
 = General usage =
 
-*JavaStruct* façade class is used to pack and unpack struct classes. Below is a simple unit test method for checking a struct class. 
+*JavaStruct* façade class is used to pack and unpack struct classes. Below is a simple unit test method for checking a struct class. Struct fields hasan order value, because Java JVM specification does not tell anything about order of the class members. They are ordered as their appearance in Sun's implementation but it differs on other JVM's. So every Struct field has to supply an order value.
 
 {{{
-	public void testPublicPrimitives(){
-		PublicPrimitives pp = new PublicPrimitives();
-		// Change some fields in object;
-		try {
-			byte[] b = JavaStruct.pack(pp);
-			PublicPrimitives pp2 = new PublicPrimitives();
-			assertFalse(pp.equals(pp2));
-			JavaStruct.unpack(pp2, b);
-			assertTrue(pp.equals(pp2));
-		} catch (StructException e) {
-			e.printStackTrace();
-			fail();
-		}
-	}
+@StructClass
+public class Foo{
+    @StructField(order = 0)
+    public byte b;
+    @StructField(order = 1)
+    public int i;
+}
+
+try{
+    // Pack the class as a byte buffer
+    Foo f = new Foo();
+    f.b = (byte)1;
+    f.i = 1;
+    byte[] b = JavaStruct.pack(f);
+    
+    // Unpack it into an object
+    Foo f2 = new Foo();
+    JavaStruct.unpack(f2, b);
+}
+catch(StructException e){
+}
 }}}
+
+Struct operations throws a checked StructException if anything goes wrong.
+
+Struct classes can be used with Streams directly too.
+
 
 = Primitives =
 
@@ -93,16 +105,16 @@ public class PublicPrimitives implements Serializable {
 
 = Arrays =
 
-Arrays have some prerequisites. When unpacking, sufficent space should be reserved in the array. 
+Arrays have some prerequisites. When unpacking, sufficent space should be reserved in the array. Only arrays, whose lengths are defined in another field using ArrayLengthMarker (see below section) can be null, they are automatically allocated while unpacking. Other than that they can not be null and uninitialized. 
 
 {{{
 @StructClass
 public class PublicPrimitiveArrays{
 	@StructField(order = 0)
-	public byte[] b;
+	public byte[] b = new byte[5];
 
 	@StructField(order = 1)
-	public char[] c;
+	public char[] c = new byte[10];
 
 	@StructField(order = 2)
 	public short[] s;
@@ -112,17 +124,32 @@ public class PublicPrimitiveArrays{
 }
 }}}
 
-== Array Length Markers ==
+= Array Length Markers =
+Array length markers are very useful for the fields whose legth is defined in anoher field. consider the following example.  This is a special String struct which has a length fields and length number of 16 bit characters following it. 
+
+{{{
+  +--------+-----------------------//----------------------------------------+
+  | Length | UTF-16 Characters     \\                                        |
+  +--------+-----------------------//----------------------------------------+
+}}}
+
+In order to process this, we have to represent these strings as a special Struct class, lets say AStruct. The length field should be annotated as "ArrayLengthMarker". This way javastruct can automatically use the value in length field while processing the array field during packing and unpacking operations.
 
 {{{
 @StructClass
-public class LengthMarkers {
-
-	@ArrayLengthMarker (fieldName = "buffer")
-	@StructField(order = 0)
-	public int bufferLength;
-
-	@StructField(order = 1)
-	public byte[] buffer;
+public class AString {
+	
+	@StructField (order = 0 )
+	@ArrayLengthMarker (fieldName = "chars")
+	public int length;
+	
+	@StructField (order = 1)
+	public char[] chars;
+	
+	public AString(String content){
+		this.length = content.length();
+		this.chars = content.toCharArray();
+	}
+...
 }
 }}}
