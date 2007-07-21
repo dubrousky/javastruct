@@ -13,14 +13,14 @@ import struct.StructPacker;
 import struct.StructUnpacker;
 
 /**
- * A class for reading and writing Adobe Photoshop Color Book format.
- * Format details is given in http://magnetiq.com/docs/PhotoshopColorBook.txt
- * Thanks to Ates Goral for his help.
+ * A class for reading and writing Adobe Photoshop Color Book format. Format
+ * details is given in http://magnetiq.com/docs/PhotoshopColorBook.txt Thanks to
+ * Ates Goral for his help.
  * 
  * JavaStruct makes it very easy to read header information. But reading color
  * datais tricky, because format changes depending to Color space idenifier
  * (RGB, CMYK or Lab) we have to read them conditionally, and there is some
- * repeated code.There could be a better way, but this is simpler to understand. 
+ * repeated code.There could be a better way, but this is simpler to understand.
  * 
  * Two example acb files are included in the project. They are used in the main
  * method of this class.
