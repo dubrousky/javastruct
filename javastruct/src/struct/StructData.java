@@ -41,7 +41,6 @@ public class StructData {
 				int i= 0;
 				for(; i<fields.length ;i++){
 					if (lengthMarker.fieldName().equals(fields[i].getName())) {
-						fieldData.setArrayWithDefinedLength(fields[i]);
 						lengthedArrayFields.put(fields[i].getName(), field);
 						break;
 					}
