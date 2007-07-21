@@ -32,21 +32,6 @@
                 <exclude name="**/*.java"/>
             </fileset>
         </copy>
-
-        <mkdir dir="${build.test}"/>
-        <javac srcdir="${src.test}"
-            destdir="${build.test}"
-            debug="true" encoding="utf-8">
-            <classpath>
-                <path refid="classpath.build"/>
-                <pathelement path="${build.java}"/>
-            </classpath>
-        </javac>
-        <copy todir="${build.test}">
-            <fileset dir="${src.test}">
-                <exclude name="**/*.java"/>
-            </fileset>
-        </copy>
     </target>
 
 
@@ -62,39 +47,14 @@
         <delete dir="${dist.dir}"/>
         <mkdir dir="${dist.dir}"/>
         <mkdir dir="${dist.dir}/lib"/>
-        <mkdir dir="${dist.dir}/config"/>
          
         <copy todir="${dist.dir}/lib">
             <fileset dir="${lib.runtime}">
             </fileset>
         </copy>
 
-    	<copy todir="${dist.dir}/config">
-            <fileset dir="${src.config}">
-            </fileset>
-        </copy>
-    	
-        <copy todir="${dist.dir}/lisanslar">
-            <fileset dir="${licences.dir}">
-            </fileset>
-        </copy>
-    	
-    	<copy file="run.sh" todir="${dist.dir}" />
-    	<copy file="runtest_dbus.sh" todir="${dist.dir}" /> 
-    	<copy file="runtest_socket.sh" todir="${dist.dir}" />
-    	<copy file="zemberek-server.xml" todir="${dist.dir}" />
-        <tstamp>
-            <format property="release" pattern="-dMMMyy" locale="tr"/>
-        </tstamp>
         <jar jarfile="${dist.dir}/${name}-${version}.jar" basedir="${build.java}">
         </jar>
-        <!-- create the zip file with the same naming scheme -->
-        <zip destfile="${dist.dir}/${isim}-${surum}.zip"
-            basedir="${dist.dir}"
-            update="true"
-            excludes="**/*.zip"
-            />
-
     </target>
 
 </project>
