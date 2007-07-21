@@ -1,8 +1,5 @@
 package struct;
 
-import struct.ArrayLengthMarker;
-import struct.StructClass;
-import struct.StructField;
 
 @StructClass
 public class LengthMarkers {

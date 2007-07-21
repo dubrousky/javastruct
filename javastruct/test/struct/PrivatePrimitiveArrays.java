@@ -2,9 +2,6 @@ package struct;
 
 import java.io.Serializable;
 
-import struct.StructClass;
-import struct.StructField;
-
 @SuppressWarnings("serial")
 @StructClass
 public class PrivatePrimitiveArrays implements Serializable {
