@@ -12,7 +12,6 @@ public class StructFieldData {
 	private Method setter;
 	private boolean arrayLengthMarker = false;
 	private Field lengthField;
-	private Field arrayWithDefinedLength;
 	private Primitive type;
 	
 	
@@ -80,17 +79,6 @@ public class StructFieldData {
 		this.arrayLengthMarker = arrayLengthMarker;
 	}
 
-
-	public Field getArrayField() {
-		return arrayWithDefinedLength;
-	}
-
-
-	public void setArrayField(Field arrayField) {
-		this.arrayWithDefinedLength = arrayField;
-	}
-
-
 	public Primitive getType() {
 		return type;
 	}
@@ -99,16 +87,6 @@ public class StructFieldData {
 	public void setType(Primitive type) {
 		this.type = type;
 	}
-
-	public Field getArrayWithDefinedLength() {
-		return arrayWithDefinedLength;
-	}
-
-
-	public void setArrayWithDefinedLength(Field arrayWithDefinedLength) {
-		this.arrayWithDefinedLength = arrayWithDefinedLength;
-	}
-
 
 	public boolean isRequiresGetterSetter() {
 		return requiresGetterSetter;
