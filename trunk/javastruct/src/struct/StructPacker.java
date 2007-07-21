@@ -18,6 +18,7 @@ public class StructPacker extends StructOutputStream{
 
 	public StructPacker(OutputStream os, ByteOrder order){
         super.init(os, order);
+        bos = (ByteArrayOutputStream)os;
 	}
 
     public byte[] pack(Object objectToPack) throws StructException {
