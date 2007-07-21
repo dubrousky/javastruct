@@ -15,10 +15,6 @@ public abstract class StructOutputStream extends OutputStream {
 
 	protected DataOutput dataOutput;
 
-	public StructOutputStream(OutputStream outStream) {
-		init(outStream, ByteOrder.BIG_ENDIAN);
-	}
-
 	protected StructOutputStream() {
 	}
 
@@ -140,12 +136,6 @@ public abstract class StructOutputStream extends OutputStream {
 				break;
 			}
 		}
-	}
-
-	public void handleObject(Field field, Object obj, int len)
-			throws IllegalArgumentException, StructException,
-			IllegalAccessException, IOException {
-		writeObject(field.get(obj));
 	}
 	
 	public void handleObject(Field field, Object obj)
