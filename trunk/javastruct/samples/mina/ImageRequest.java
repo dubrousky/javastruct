@@ -4,7 +4,7 @@ import struct.StructClass;
 import struct.StructField;
 
 @StructClass
-public class ImageRequest {
+public class ImageRequest{
 	@StructField (order = 0)
     private int width;
 	
@@ -30,5 +30,5 @@ public class ImageRequest {
 
     public int getNumberOfCharacters() {
         return numberOfCharacters;
-    }	
+    }
 }
