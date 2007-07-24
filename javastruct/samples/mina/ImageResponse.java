@@ -11,7 +11,7 @@ import struct.StructClass;
 import struct.StructField;
 
 @StructClass
-public class ImageResponse {
+public class ImageResponse implements StructMessage{
 	@ArrayLengthMarker (fieldName = "buffer1")
 	@StructField (order = 0)
 	public int length1;
@@ -37,6 +37,10 @@ public class ImageResponse {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ImageIO.write(image, "PNG", baos);
         return baos.toByteArray();
-    }    
-	
+    }
+
+	public int getID() {
+		return Messages.IMAGE_RESPONSE;
+	}
+
 }
