@@ -17,6 +17,14 @@ public class PerfTests extends TestCase {
 	public void testPrivatePrimitivesPerf() {
 		Util.testPerf(new PrivatePrimitives(), 500000);
 	}
+	
+	public void testPublicPrimitivesPerf2() {
+		Util.testPerf2(new PublicPrimitives(), 500000);
+	}
+
+	public void testPrivatePrimitivesPerf2() {
+		Util.testPerf2(new PrivatePrimitives(), 500000);
+	}
 
 	public void testNestedPublicPrimitivesPerf() {
 		PublicPrimitives p1 = new PublicPrimitives();

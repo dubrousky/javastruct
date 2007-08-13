@@ -21,7 +21,7 @@ public class StructUnpacker extends StructInputStream {
     }
     
     public StructUnpacker(InputStream is, ByteOrder order){
-    	super.init(is, ByteOrder.BIG_ENDIAN);
+    	super.init(is, order);
     }
 
     public void unpack(Object objectToUnpack) throws StructException{

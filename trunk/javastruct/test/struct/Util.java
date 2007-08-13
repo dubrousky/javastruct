@@ -4,6 +4,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 
+import struct.mina.StructOutput;
+
 public class Util {
 	public static void testPerf(Object o, int iters) {
 		try {
@@ -11,6 +13,45 @@ public class Util {
 			byte[] b = null;
 			for (int i = 0; i < iters; i++) {
 				b = JavaStruct.pack(o);
+			}
+			System.out.println("(" + o.getClass().getName()
+					+ ") Packing performance:  "
+					+ TimeTracker.getItemCountPerSecond("s", iters));
+			System.out.println("Size: " + b.length);
+			TimeTracker.stopClock("s");
+
+			TimeTracker.startClock("s");
+			ByteArrayOutputStream bos = new ByteArrayOutputStream(1000);
+			ObjectOutputStream oos = new ObjectOutputStream(bos);
+
+			for (int i = 0; i < iters; i++) {
+				oos.writeObject(o);
+				oos.reset();
+				b = bos.toByteArray();
+				bos.reset();
+			}
+			System.out.println("(" + o.getClass().getName()
+					+ ") Serialization performance:  "
+					+ TimeTracker.getItemCountPerSecond("s", iters));
+			System.out.println("Size: " + b.length);
+			TimeTracker.stopClock("s");
+
+		} catch (StructException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void testPerf2(Object o, int iters) {
+		try {
+			TimeTracker.startClock("s");
+			byte[] b = null;
+			
+			StructOutput out = new StructOutput();
+			for (int i = 0; i < iters; i++) {
+				b = out.pack(o);
+				out.reset();
 			}
 			System.out.println("(" + o.getClass().getName()
 					+ ") Packing performance:  "

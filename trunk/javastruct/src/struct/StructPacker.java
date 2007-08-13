@@ -29,7 +29,7 @@ public class StructPacker extends StructOutputStream{
 	/**
 	 * Serialize Object as a struct
 	 */
-	public void writeObject( Object obj) throws StructException{
+	public void writeObject(Object obj) throws StructException{
         if(obj == null)	throw new StructException("Struct classes cant be null. ");
         StructData info = StructUtils.getStructInfo(obj);
 
