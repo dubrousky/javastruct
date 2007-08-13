@@ -11,9 +11,7 @@ public class StructFieldData {
 	private Method getter;
 	private Method setter;
 	private boolean arrayLengthMarker = false;
-	private Field lengthField;
 	private Primitive type;
-	
 	
 	public StructFieldData(Field field, boolean requiresGetterSetter,
 			Method getter, Method setter, Primitive type, 
@@ -92,14 +90,4 @@ public class StructFieldData {
 		return requiresGetterSetter;
 	}
 
-
-	public Field getLengthField() {
-		return lengthField;
-	}
-
-
-	public void setLengthField(Field lengthField) {
-		this.lengthField = lengthField;
-	}
-	
 }
