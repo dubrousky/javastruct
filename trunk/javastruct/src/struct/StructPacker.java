@@ -29,7 +29,8 @@ public class StructPacker extends StructOutputStream{
 	/**
 	 * Serialize Object as a struct
 	 */
-	public void writeObject(Object obj) throws StructException{
+	@Override
+  public void writeObject(Object obj) throws StructException{
         if(obj == null)	throw new StructException("Struct classes cant be null. ");
         StructData info = StructUtils.getStructInfo(obj);
 
@@ -55,18 +56,18 @@ public class StructPacker extends StructOutputStream{
             	}
             	if ( fieldData.requiresGetterSetter()){
             		if(lengthedArray && arrayLength >= 0){
-            			writeField(currentField, fieldData.getGetter(), obj, arrayLength);
+            			writeField(fieldData, fieldData.getGetter(), obj, arrayLength);
             		}
-            		else writeField(currentField, fieldData.getGetter(), obj, -1);
+            		else writeField(fieldData, fieldData.getGetter(), obj, -1);
             	}
             	// Field is public. Access directly.
             	else {
             		if(lengthedArray && arrayLength >= 0){
-            				writeField(currentField, null, obj, arrayLength);
+            				writeField(fieldData, null, obj, arrayLength);
             		}
             		// Array is null if Length is negative.
             		else {
-            			writeField(currentField, null, obj, -1);
+            			writeField(fieldData, null, obj, -1);
             		}
             	}
             }

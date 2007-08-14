@@ -9,8 +9,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.ByteOrder;
 
-import struct.Constants.Primitive;
-
 public abstract class StructOutputStream extends OutputStream {
 
 	protected DataOutput dataOutput;
@@ -31,14 +29,12 @@ public abstract class StructOutputStream extends OutputStream {
 	/**
 	 * Write a fields value. Field can be an primitive, array or another object.
 	 */
-	public void writeField( Field field, Method getter, Object obj, int len )
+	public void writeField( StructFieldData fieldData, Method getter, Object obj, int len )
 	            throws IllegalAccessException, IOException, InvocationTargetException, StructException {
-		String typeString = field.getType().getName();
+		Field field = fieldData.getField();
 		if ( !field.getType().isArray() )
 		{
-			Primitive p = Constants.getPrimitive(typeString);
-			switch(p) {
-			
+			switch(fieldData.getType()) {
 			case BOOLEAN: 
 				if(getter != null) writeBoolean((Boolean)getter.invoke(obj, (Object[])null));
 				else writeBoolean(field.getBoolean(obj));
@@ -88,8 +84,7 @@ public abstract class StructOutputStream extends OutputStream {
 				break;
 			}
 		} else {
-			Primitive p = Constants.getPrimitive(field.getType().getName().charAt(1));
-			switch(p) {
+			switch(fieldData.getType()) {
 			case BOOLEAN:
 				if(getter != null) writeBooleanArray((boolean[])getter.invoke(obj, (Object[])null), len);
 				else writeBooleanArray((boolean[]) field.get(obj), len);
