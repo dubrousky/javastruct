@@ -26,12 +26,11 @@ public abstract class StructInputStream extends InputStream {
 
   public abstract void readObject(Object obj) throws StructException;
 
-  public void readField( Field field, Method getter, Method setter, Object obj )
+  public void readField( StructFieldData fieldData, Method getter, Method setter, Object obj )
               throws IOException, InvocationTargetException, InstantiationException, IllegalAccessException, StructException {
-      String typeString = field.getType().getName();
+      Field field = fieldData.getField();
       if ( !field.getType().isArray() ){
-    	  Primitive p = Constants.getPrimitive(typeString);
-    	  switch(p) {
+    	  switch(fieldData.getType()) {
     	  case BOOLEAN: 
     		  if(setter != null) setter.invoke(obj, new Object[]{readBoolean()});
     		  else field.setBoolean(obj, readBoolean());
@@ -89,10 +88,9 @@ public abstract class StructInputStream extends InputStream {
     	  }
       }
       else {
-    	  Primitive p = Constants.getPrimitive(typeString.charAt(1));
     	  if ( getter!= null && getter.invoke(obj,(Object[])null) == null )
-    		  throw new StructException("Arrays ca not be null : " + field.getName());
-    	  switch(p) {
+    		  throw new StructException("Arrays can not be null : " + field.getName());
+    	  switch(fieldData.getType()) {
     	  case BOOLEAN: 
     		  if(getter != null) readBooleanArray((boolean[])getter.invoke(obj, (Object[])null));
     		  else readBooleanArray((boolean[])field.get(obj));

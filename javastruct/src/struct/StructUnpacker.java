@@ -28,6 +28,7 @@ public class StructUnpacker extends StructInputStream {
         readObject(objectToUnpack);
     }
 
+    @Override
     public void readObject( Object obj) throws StructException{
         if(obj == null)  throw new StructException("Struct objects cannot be null.");
         StructData info = StructUtils.getStructInfo(obj);
@@ -52,7 +53,7 @@ public class StructUnpacker extends StructInputStream {
             		}
 	       			lengthedArray = true;
             	}
-            	// For private and protected fields, use getFieldName or veya isFieldName
+            	// For private and protected fields, use getFieldName or isFieldName
             	if ( fieldData.requiresGetterSetter()){
             		Method getter = fieldData.getGetter();
             		Method setter = fieldData.getSetter();
@@ -76,7 +77,7 @@ public class StructUnpacker extends StructInputStream {
             				throw new StructException("Arrays can not be null :"+ currentField.getName());
             			}
             		}
-            		readField(currentField,getter,setter,obj);
+            		readField(fieldData, getter, setter, obj);
             	}
             	// If public, use directly.
             	else {
@@ -96,7 +97,7 @@ public class StructUnpacker extends StructInputStream {
             			}
             		}
             		if(lengthedArray == false || (lengthedArray == true && arrayLength >= 0)){
-            			readField(currentField, null, null, obj);
+            			readField(fieldData, null, null, obj);
             		}
             	}
             }
