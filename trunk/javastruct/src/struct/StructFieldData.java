@@ -32,46 +32,37 @@ public class StructFieldData {
 		return field;
 	}
 
-
 	public void setField(Field field) {
 		this.field = field;
 	}
-
 
 	public boolean requiresGetterSetter() {
 		return requiresGetterSetter;
 	}
 
-
 	public void setRequiresGetterSetter(boolean requiresGetterSetter) {
 		this.requiresGetterSetter = requiresGetterSetter;
 	}
-
 
 	public Method getGetter() {
 		return getter;
 	}
 
-
 	public void setGetter(Method getter) {
 		this.getter = getter;
 	}
-
 
 	public Method getSetter() {
 		return setter;
 	}
 
-
 	public void setSetter(Method setter) {
 		this.setter = setter;
 	}
 
-
 	public boolean isArrayLengthMarker() {
 		return arrayLengthMarker;
 	}
-
 
 	public void setArrayLengthMarker(boolean arrayLengthMarker) {
 		this.arrayLengthMarker = arrayLengthMarker;
@@ -81,7 +72,6 @@ public class StructFieldData {
 		return type;
 	}
 
-
 	public void setType(Primitive type) {
 		this.type = type;
 	}
@@ -89,5 +79,4 @@ public class StructFieldData {
 	public boolean isRequiresGetterSetter() {
 		return requiresGetterSetter;
 	}
-
 }

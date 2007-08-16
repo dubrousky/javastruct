@@ -75,15 +75,15 @@ public class StructData {
 	private static final Method getGetterName(Method[] methods, Field field) throws StructException {
 		String getterName = "get" + field.getName();
 		String booleanGetterName = "is" + field.getName();
-		for (int i = 0; i < methods.length; i++) {
-			if (methods[i].getName().equalsIgnoreCase(getterName)) {
-				return methods[i];
+		for (Method method : methods) {
+			if (method.getName().equalsIgnoreCase(getterName)) {
+				return method;
 			}
 		}
 		if (field.getType().getName().equals("boolean")) {
-			for (int i = 0; i < methods.length; i++) {
-				if (methods[i].getName().equalsIgnoreCase(booleanGetterName)) {
-					return methods[i];
+			for (Method method : methods) {
+				if (method.getName().equalsIgnoreCase(booleanGetterName)) {
+					return method;
 				}
 			}
 		}
