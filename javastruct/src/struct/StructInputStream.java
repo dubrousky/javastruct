@@ -204,7 +204,7 @@ public abstract class StructInputStream extends InputStream {
       buffer[i] = readBoolean();
   }
 
-  protected void readByteArray( byte buffer[] ) throws IOException,StructException {
+  protected void readByteArray( byte buffer[] ) throws IOException {
       dataInput.readFully(buffer);
   }
 
@@ -239,7 +239,7 @@ public abstract class StructInputStream extends InputStream {
   }
 
   protected void readObjectArray( Object objects[] )
-                 throws IOException, IllegalAccessException, InvocationTargetException, StructException {
+                 throws  StructException {
     for ( int i=0; i<objects.length; i++)
       readObject( objects[i] );
   }
