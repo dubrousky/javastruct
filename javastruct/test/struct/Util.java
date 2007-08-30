@@ -4,7 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 
-import struct.mina.StructOutput;
+import struct.mina.MinaStructPacker;
 
 public class Util {
 	public static void testPerf(Object o, int iters) {
@@ -48,7 +48,7 @@ public class Util {
 			TimeTracker.startClock("s");
 			byte[] b = null;
 			
-			StructOutput out = new StructOutput();
+			MinaStructPacker out = new MinaStructPacker();
 			for (int i = 0; i < iters; i++) {
 				b = out.pack(o);
 				out.reset();
