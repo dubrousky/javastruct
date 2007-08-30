@@ -15,7 +15,6 @@ public class StructUtils {
      * Put class metadata and required info to a cache
      *
      * @param obj Object
-     * @return telays.util.struct.StructInfo
      * @throws StructException
      */
     public static synchronized StructData getStructInfo(Object obj) throws StructException{
