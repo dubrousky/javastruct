@@ -1,13 +1,25 @@
 package struct;
 
 import java.io.ByteArrayOutputStream;
+import java.io.DataOutput;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
-import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.ByteOrder;
 
-public class StructPacker extends StructOutputStream{
-	protected ByteArrayOutputStream bos;
+public class StructPacker extends StructOutput{
+	private ByteArrayOutputStream bos;
+	protected DataOutput dataOutput;
 
+	protected void init(OutputStream outStream, ByteOrder order) {
+		if (order == ByteOrder.LITTLE_ENDIAN) {
+			dataOutput = new LEDataOutputStream(outStream);
+		} else {
+			dataOutput = new DataOutputStream(outStream);
+		}
+	}
+	
     public StructPacker(){
         this(new ByteArrayOutputStream(), ByteOrder.BIG_ENDIAN);
     }
@@ -17,7 +29,7 @@ public class StructPacker extends StructOutputStream{
     }
 
 	public StructPacker(OutputStream os, ByteOrder order){
-        super.init(os, order);
+        init(os, order);
         bos = (ByteArrayOutputStream)os;
 	}
 
@@ -26,54 +38,105 @@ public class StructPacker extends StructOutputStream{
         return bos.toByteArray();
     }
 
-	/**
-	 * Serialize Object as a struct
-	 */
-	@Override
-  public void writeObject(Object obj) throws StructException{
-        if(obj == null)	throw new StructException("Struct classes cant be null. ");
-        StructData info = StructUtils.getStructInfo(obj);
-
-        boolean lengthedArray = false;
-        int arrayLength = 0;
-
-		for (Field currentField : info.getFields()) {
-			//System.out.println("Processing field: " + currentField.getName());
-			StructFieldData fieldData = info.getFieldData(currentField.getName());
-			if(fieldData == null) {
-				throw new StructException("Field Data not found for field: " + currentField.getName());
-			}
-            lengthedArray = false; 
-            arrayLength = 0;
-            try{
-            	if(fieldData.isArrayLengthMarker()){
-            		if (fieldData.requiresGetterSetter()) {
-            			arrayLength = ((Number)fieldData.getGetter().invoke( obj, (Object[])null)).intValue();
-            		} else {
-            			arrayLength = ((Number)fieldData.getField().get(obj)).intValue();
-            		}
-            		lengthedArray = true;
-            	}
-            	if ( fieldData.requiresGetterSetter()){
-            		if(lengthedArray && arrayLength >= 0){
-            			writeField(fieldData, fieldData.getGetter(), obj, arrayLength);
-            		}
-            		else writeField(fieldData, fieldData.getGetter(), obj, -1);
-            	}
-            	// Field is public. Access directly.
-            	else {
-            		if(lengthedArray && arrayLength >= 0){
-            				writeField(fieldData, null, obj, arrayLength);
-            		}
-            		// Array is null if Length is negative.
-            		else {
-            			writeField(fieldData, null, obj, -1);
-            		}
-            	}
-            }
-            catch (Exception e) {
-            	throw new StructException(e);
-            }
-		}
+	public void writeBoolean(boolean value) throws IOException {
+		dataOutput.writeBoolean(value);
 	}
+
+	public void writeByte(byte value) throws IOException {
+		dataOutput.writeByte(value);
+	}
+
+	public void writeShort(short value) throws IOException {
+		dataOutput.writeShort(value);
+	}
+
+	public void writeInt(int value) throws IOException {
+		dataOutput.writeInt(value);
+	}
+
+	public void writeLong(long value) throws IOException {
+		dataOutput.writeLong(value);
+	}
+
+	public void writeChar(char value) throws IOException {
+		dataOutput.writeChar(value);
+	}
+
+	public void writeFloat(float value) throws IOException {
+		dataOutput.writeFloat(value);
+	}
+
+	public void writeDouble(double value) throws IOException {
+		dataOutput.writeDouble(value);
+	}
+
+	public void writeBooleanArray(boolean buffer[], int len) throws IOException {
+		if (len == -1 || len > buffer.length)
+			len = buffer.length;
+		for (int i = 0; i < len; i++)
+			dataOutput.writeBoolean(buffer[i]);
+	}
+
+	public void writeByteArray(byte buffer[], int len) throws IOException {
+		if (len == 0) {
+			return;
+		}
+		if (len == -1 || len > buffer.length)
+			len = buffer.length;
+		dataOutput.write(buffer, 0, len);
+	}
+
+	public void writeCharArray(char buffer[], int len) throws IOException {
+		if (len == -1 || len > buffer.length)
+			len = buffer.length;
+		for (int i = 0; i < len; i++)
+			dataOutput.writeChar(buffer[i]);
+	}
+
+	public void writeShortArray(short buffer[], int len) throws IOException {
+		if (len == -1 || len > buffer.length)
+			len = buffer.length;
+		for (int i = 0; i < len; i++)
+			dataOutput.writeShort(buffer[i]);
+	}
+
+	public void writeIntArray(int buffer[], int len) throws IOException {
+		if (len == -1 || len > buffer.length)
+			len = buffer.length;
+		for (int i = 0; i < len; i++)
+			dataOutput.writeInt(buffer[i]);
+	}
+
+	public void writeLongArray(long buffer[], int len) throws IOException {
+		if (len == -1 || len > buffer.length)
+			len = buffer.length;
+		for (int i = 0; i < len; i++)
+			dataOutput.writeLong(buffer[i]);
+	}
+
+	public void writeFloatArray(float buffer[], int len) throws IOException {
+		if (len == -1 || len > buffer.length)
+			len = buffer.length;
+		for (int i = 0; i < len; i++)
+			dataOutput.writeFloat(buffer[i]);
+	}
+
+	public void writeDoubleArray(double buffer[], int len) throws IOException {
+		if (len == -1 || len > buffer.length)
+			len = buffer.length;
+		for (int i = 0; i < len; i++)
+			dataOutput.writeDouble(buffer[i]);
+	}
+
+	public void writeObjectArray(Object buffer[], int len) throws IOException,
+			IllegalAccessException, InvocationTargetException, StructException {
+		if (buffer == null || len == 0)
+			return;
+		if (len == -1 || len > buffer.length)
+			len = buffer.length;
+		for (int i = 0; i < len; i++)
+			writeObject(buffer[i]);
+	}
+
+
 }

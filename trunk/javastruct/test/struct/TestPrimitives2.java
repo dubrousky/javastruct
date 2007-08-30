@@ -1,6 +1,6 @@
 package struct;
 
-import struct.mina.StructOutput;
+import struct.mina.MinaStructPacker;
 import junit.framework.TestCase;
 
 public class TestPrimitives2 extends TestCase {
@@ -9,7 +9,7 @@ public class TestPrimitives2 extends TestCase {
 		PublicPrimitives pp = new PublicPrimitives();
 		pp.setParams();
 		try {
-			StructOutput so = new StructOutput();
+			MinaStructPacker so = new MinaStructPacker();
 			byte[] b = so.pack(pp);
 			PublicPrimitives pp2 = new PublicPrimitives();
 			assertFalse(pp.equals(pp2));
@@ -25,7 +25,7 @@ public class TestPrimitives2 extends TestCase {
 		PrivatePrimitives pp = new PrivatePrimitives();
 		pp.setParams();
 		try {
-			StructOutput so = new StructOutput();
+			MinaStructPacker so = new MinaStructPacker();
 			byte[] b = so.pack(pp);	
 			PrivatePrimitives pp2 = new PrivatePrimitives();
 			assertFalse(pp.equals(pp2));
