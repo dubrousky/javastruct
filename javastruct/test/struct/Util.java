@@ -4,7 +4,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 
-import struct.mina.MinaStructPacker;
+import mina.MinaStructPacker;
+
 
 public class Util {
 	public static void testPerf(Object o, int iters) {

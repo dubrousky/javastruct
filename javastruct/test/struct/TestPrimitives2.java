@@ -1,6 +1,6 @@
 package struct;
 
-import struct.mina.MinaStructPacker;
+import mina.MinaStructPacker;
 import junit.framework.TestCase;
 
 public class TestPrimitives2 extends TestCase {
