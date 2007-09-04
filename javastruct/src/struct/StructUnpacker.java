@@ -1,6 +1,9 @@
 package struct;
 
 import java.io.ByteArrayInputStream;
+import java.io.DataInput;
+import java.io.DataInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
@@ -10,8 +13,19 @@ import java.nio.ByteOrder;
 /**
  * 
  */
-public class StructUnpacker extends StructInputStream {
+public class StructUnpacker extends StructInput {
 
+	DataInput dataInput;
+
+	protected void init( InputStream inStream, ByteOrder order) {
+		if ( order == ByteOrder.LITTLE_ENDIAN){
+			dataInput = new LEDataInputStream(inStream);
+		}
+		else {
+			dataInput = new DataInputStream( inStream );
+		}
+	}
+	  
     public StructUnpacker(byte[] bufferToUnpack){
         this(new ByteArrayInputStream(bufferToUnpack), ByteOrder.BIG_ENDIAN);
     }
@@ -21,7 +35,7 @@ public class StructUnpacker extends StructInputStream {
     }
     
     public StructUnpacker(InputStream is, ByteOrder order){
-    	super.init(is, order);
+    	init(is, order);
     }
 
     public void unpack(Object objectToUnpack) throws StructException{
@@ -106,4 +120,82 @@ public class StructUnpacker extends StructInputStream {
             }
         }
     }
+    
+    protected boolean readBoolean() throws IOException {
+    	return dataInput.readBoolean();
+    }
+
+    protected byte readByte() throws IOException {
+    	return dataInput.readByte();
+    }
+
+    protected short readShort() throws IOException {
+    	return dataInput.readShort();
+    }
+
+    protected int readInt() throws IOException {
+    	return dataInput.readInt();
+    }
+
+    protected long readLong() throws IOException {
+    	return dataInput.readLong();
+    }
+
+    protected char readChar() throws IOException {
+    	return dataInput.readChar();
+    }
+
+    protected float readFloat() throws IOException {
+    	return dataInput.readFloat();
+    }
+
+    protected double readDouble() throws IOException {
+    	return dataInput.readDouble();
+    }
+
+    protected void readBooleanArray(boolean buffer[]) throws IOException {
+    	for ( int i=0; i<buffer.length; i++)
+    		buffer[i] = readBoolean();
+    }
+
+    protected void readByteArray( byte buffer[] ) throws IOException {
+    	dataInput.readFully(buffer);
+    }
+
+    protected void readCharArray( char buffer[] ) throws IOException {
+    	for ( int i=0; i<buffer.length; i++)
+    		buffer[i] = readChar();
+    }
+
+    protected void readShortArray( short buffer[] ) throws IOException {
+    	for ( int i=0; i<buffer.length; i++)
+    		buffer[i] = readShort();
+    }
+
+    protected void readIntArray( int buffer[] ) throws IOException {
+    	for ( int i=0; i<buffer.length; i++)
+    		buffer[i] = readInt();
+    }
+
+    protected void readLongArray( long buffer[] ) throws IOException {
+    	for ( int i=0; i<buffer.length; i++)
+    		buffer[i] = readLong();
+    }
+
+    protected void readFloatArray( float buffer[] ) throws IOException {
+    	for ( int i=0; i<buffer.length; i++)
+    		buffer[i] = readFloat();
+    }
+
+    protected void readDoubleArray( double buffer[] ) throws IOException {
+    	for ( int i=0; i<buffer.length; i++)
+    		buffer[i] = readDouble();
+    }
+
+    protected void readObjectArray( Object objects[] ) throws  IOException, StructException {
+    	for ( int i=0; i<objects.length; i++)
+    		readObject( objects[i] );
+    }
+
+
 }
