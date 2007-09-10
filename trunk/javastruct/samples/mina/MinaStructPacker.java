@@ -1,29 +1,27 @@
 package mina;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.ByteOrder;
 
 import org.apache.mina.common.ByteBuffer;
 
-import struct.Constants;
-import struct.StructData;
 import struct.StructException;
-import struct.StructFieldData;
 import struct.StructOutput;
-import struct.StructUtils;
-import struct.Constants.Primitive;
 
 public class MinaStructPacker extends StructOutput{
 	ByteBuffer out;
 	
 	public MinaStructPacker(){
-	}
-	
-	public byte[] pack(Object objectToPack) throws StructException{
 		out = ByteBuffer.allocate(64, false);
 		out.setAutoExpand(true);
+	}
+	
+	public MinaStructPacker(ByteBuffer buffer){
+		out = buffer;
+	}
+
+	public byte[] pack(Object objectToPack) throws StructException{
 		writeObject(objectToPack);
 		return out.array();
 	}
