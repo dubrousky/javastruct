@@ -11,7 +11,11 @@ import java.lang.reflect.Method;
 import java.nio.ByteOrder;
 
 /**
+ * StructUnpacker is the default deserializer in Javastruct. It uses 
+ * DataStreams (Both Big endian and Little endian)
  * 
+ * @author mdakin
+ *
  */
 public class StructUnpacker extends StructInput {
 
