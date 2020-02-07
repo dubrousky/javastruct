@@ -1,5 +1,8 @@
-# What is Javastruct
+# What is Javastruct 
+
 javastruct is a library for using java objects as C or C++ structs. It was exported to github from https://code.google.com/archive/p/javastruct/. Please contact the original authors there. Licence information is retained according to the original.
+
+[![Build Status](https://travis-ci.org/dubrousky/javastruct.svg?branch=master)](https://travis-ci.org/dubrousky/javastruct)
 
 # What is it used for?
 For details please refer to Wiki page
